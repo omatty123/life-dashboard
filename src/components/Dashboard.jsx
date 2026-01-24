@@ -15,11 +15,15 @@ export default function Dashboard() {
   const [showAddLink, setShowAddLink] = useState(false)
   const [newLink, setNewLink] = useState({ label: '', url: '' })
 
-  // Load from localStorage or use initial data
+  // Load from localStorage, merging any new projects from initialData
   useEffect(() => {
     const saved = localStorage.getItem('life-dashboard-projects')
     if (saved) {
-      setProjects(JSON.parse(saved))
+      const savedProjects = JSON.parse(saved)
+      const savedIds = new Set(savedProjects.map(p => p.id))
+      // Add any new projects from initialData that aren't in localStorage
+      const newProjects = initialData.projects.filter(p => !savedIds.has(p.id))
+      setProjects([...savedProjects, ...newProjects])
     } else {
       setProjects(initialData.projects)
     }
