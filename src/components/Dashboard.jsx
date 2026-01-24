@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import initialData from '../data/projects.json'
 
 const categoryConfig = {
@@ -9,9 +9,6 @@ const categoryConfig = {
   reading: { label: 'READING', color: '#EC4899' }
 }
 
-// Google Drive API config
-const GOOGLE_CLIENT_ID = localStorage.getItem('gdrive-client-id') || ''
-const GOOGLE_API_KEY = localStorage.getItem('gdrive-api-key') || ''
 const SCOPES = 'https://www.googleapis.com/auth/drive.file'
 const READING_FOLDER_NAME = 'Life Dashboard - Reading'
 
@@ -23,34 +20,35 @@ export default function Dashboard() {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState('')
   const [showSetup, setShowSetup] = useState(false)
-  const [gapiReady, setGapiReady] = useState(false)
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [accessToken, setAccessToken] = useState(null)
+  const [clientId, setClientId] = useState(() => localStorage.getItem('gdrive-client-id') || '')
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gdrive-api-key') || '')
+  const tokenClientRef = useRef(null)
 
-  // Load Google API
+  // Load Google Identity Services
   useEffect(() => {
+    if (!clientId) return
+
     const script = document.createElement('script')
-    script.src = 'https://apis.google.com/js/api.js'
+    script.src = 'https://accounts.google.com/gsi/client'
+    script.async = true
     script.onload = () => {
-      window.gapi.load('client:auth2', async () => {
-        if (GOOGLE_CLIENT_ID && GOOGLE_API_KEY) {
-          try {
-            await window.gapi.client.init({
-              apiKey: GOOGLE_API_KEY,
-              clientId: GOOGLE_CLIENT_ID,
-              scope: SCOPES,
-              discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-            })
-            setGapiReady(true)
-            setIsSignedIn(window.gapi.auth2.getAuthInstance().isSignedIn.get())
-            window.gapi.auth2.getAuthInstance().isSignedIn.listen(setIsSignedIn)
-          } catch (e) {
-            console.error('GAPI init error:', e)
+      tokenClientRef.current = window.google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: SCOPES,
+        callback: (response) => {
+          if (response.access_token) {
+            setAccessToken(response.access_token)
           }
-        }
+        },
       })
     }
     document.body.appendChild(script)
-  }, [])
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [clientId])
 
   // Load from localStorage, merging any new projects from initialData
   useEffect(() => {
@@ -83,7 +81,7 @@ export default function Dashboard() {
     window.open(url, '_blank')
   }
 
-  const addLink = (label, url) => {
+  const addLink = useCallback((label, url) => {
     if (!label?.trim() || !url?.trim()) return
 
     setProjects(prev => prev.map(p => {
@@ -95,7 +93,7 @@ export default function Dashboard() {
       }
       return p
     }))
-  }
+  }, [selectedId])
 
   const handleAddLinkSubmit = () => {
     addLink(newLink.label, newLink.url)
@@ -115,34 +113,40 @@ export default function Dashboard() {
     }))
   }
 
-  const signIn = async () => {
-    if (gapiReady) {
-      await window.gapi.auth2.getAuthInstance().signIn()
+  const signIn = () => {
+    if (tokenClientRef.current) {
+      tokenClientRef.current.requestAccessToken()
     }
   }
 
   const getOrCreateReadingFolder = async () => {
     // Search for existing folder
-    const response = await window.gapi.client.drive.files.list({
-      q: `name='${READING_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
-      spaces: 'drive',
-      fields: 'files(id, name)'
-    })
+    const searchResponse = await fetch(
+      `https://www.googleapis.com/drive/v3/files?q=name='${READING_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false&spaces=drive&fields=files(id,name)`,
+      {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      }
+    )
+    const searchResult = await searchResponse.json()
 
-    if (response.result.files.length > 0) {
-      return response.result.files[0].id
+    if (searchResult.files && searchResult.files.length > 0) {
+      return searchResult.files[0].id
     }
 
     // Create folder
-    const folderMetadata = {
-      name: READING_FOLDER_NAME,
-      mimeType: 'application/vnd.google-apps.folder'
-    }
-    const folder = await window.gapi.client.drive.files.create({
-      resource: folderMetadata,
-      fields: 'id'
+    const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: READING_FOLDER_NAME,
+        mimeType: 'application/vnd.google-apps.folder'
+      })
     })
-    return folder.result.id
+    const folder = await createResponse.json()
+    return folder.id
   }
 
   const uploadFileToDrive = async (file) => {
@@ -157,12 +161,10 @@ export default function Dashboard() {
     form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }))
     form.append('file', file)
 
-    const token = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
-
     const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${accessToken}`
       },
       body: form
     })
@@ -174,7 +176,7 @@ export default function Dashboard() {
     e.preventDefault()
     e.stopPropagation()
 
-    if (!isSignedIn) {
+    if (!accessToken) {
       setUploadStatus('Please sign in to Google first')
       setTimeout(() => setUploadStatus(''), 3000)
       return
@@ -209,18 +211,23 @@ export default function Dashboard() {
 
     setIsUploading(false)
     setTimeout(() => setUploadStatus(''), 3000)
-  }, [isSignedIn, selectedProject, addLink])
+  }, [accessToken, selectedProject, addLink])
 
   const handleDragOver = (e) => {
     e.preventDefault()
     e.stopPropagation()
   }
 
-  const saveSetup = (clientId, apiKey) => {
-    localStorage.setItem('gdrive-client-id', clientId)
-    localStorage.setItem('gdrive-api-key', apiKey)
+  const saveSetup = (newClientId, newApiKey) => {
+    localStorage.setItem('gdrive-client-id', newClientId)
+    localStorage.setItem('gdrive-api-key', newApiKey)
+    setClientId(newClientId)
+    setApiKey(newApiKey)
+    setShowSetup(false)
     window.location.reload()
   }
+
+  const isSignedIn = !!accessToken
 
   return (
     <div
@@ -271,7 +278,7 @@ export default function Dashboard() {
 
         {/* Google Sign In */}
         <div className="px-6 py-4 border-t border-[#27272A]">
-          {!GOOGLE_CLIENT_ID ? (
+          {!clientId ? (
             <button
               onClick={() => setShowSetup(true)}
               className="text-xs text-[#52525B] hover:text-white"
@@ -318,7 +325,12 @@ export default function Dashboard() {
 
       {/* Setup Modal */}
       {showSetup && (
-        <SetupModal onClose={() => setShowSetup(false)} onSave={saveSetup} />
+        <SetupModal
+          onClose={() => setShowSetup(false)}
+          onSave={saveSetup}
+          initialClientId={clientId}
+          initialApiKey={apiKey}
+        />
       )}
     </div>
   )
@@ -443,9 +455,9 @@ function ProjectDetail({ project, openUrl, showAddLink, setShowAddLink, newLink,
   )
 }
 
-function SetupModal({ onClose, onSave }) {
-  const [clientId, setClientId] = useState(localStorage.getItem('gdrive-client-id') || '')
-  const [apiKey, setApiKey] = useState(localStorage.getItem('gdrive-api-key') || '')
+function SetupModal({ onClose, onSave, initialClientId, initialApiKey }) {
+  const [clientId, setClientId] = useState(initialClientId)
+  const [apiKey, setApiKey] = useState(initialApiKey)
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
@@ -453,28 +465,26 @@ function SetupModal({ onClose, onSave }) {
         <h2 className="text-xl font-bold text-white mb-4">Google Drive Setup</h2>
 
         <div className="text-sm text-[#A1A1AA] mb-4 space-y-2">
-          <p>To enable file uploads, you need Google Cloud credentials:</p>
+          <p>To enable file uploads:</p>
           <ol className="list-decimal list-inside space-y-1 text-[#71717A]">
-            <li>Go to <a href="https://console.cloud.google.com" target="_blank" className="text-[#3B82F6] hover:underline">Google Cloud Console</a></li>
-            <li>Create a project and enable Google Drive API</li>
-            <li>Create OAuth 2.0 credentials (Web application)</li>
-            <li>Add <code className="bg-[#09090B] px-1 rounded">https://omatty123.github.io</code> to authorized JavaScript origins</li>
-            <li>Create an API key</li>
+            <li>Go to <a href="https://console.cloud.google.com" target="_blank" rel="noreferrer" className="text-[#3B82F6] hover:underline">Google Cloud Console</a></li>
+            <li>Create a project → Enable "Google Drive API"</li>
+            <li>Go to Credentials → Create OAuth 2.0 Client ID (Web application)</li>
+            <li>Add these to Authorized JavaScript origins:
+              <ul className="ml-4 mt-1 space-y-1">
+                <li><code className="bg-[#09090B] px-1 rounded text-xs">https://omatty123.github.io</code></li>
+                <li><code className="bg-[#09090B] px-1 rounded text-xs">http://localhost:5173</code></li>
+              </ul>
+            </li>
+            <li>Copy the Client ID below</li>
           </ol>
         </div>
 
         <input
           type="text"
-          placeholder="OAuth Client ID"
+          placeholder="OAuth Client ID (ends with .apps.googleusercontent.com)"
           value={clientId}
           onChange={(e) => setClientId(e.target.value)}
-          className="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-white placeholder-[#52525B] mb-3 focus:outline-none focus:border-[#3B82F6] text-sm"
-        />
-        <input
-          type="text"
-          placeholder="API Key"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
           className="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-white placeholder-[#52525B] mb-4 focus:outline-none focus:border-[#3B82F6] text-sm"
         />
 
