@@ -152,42 +152,41 @@ export default function Dashboard() {
   const uploadFileToDrive = async (file) => {
     const folderId = await getOrCreateReadingFolder()
 
-    const metadata = {
-      name: file.name,
-      parents: [folderId]
-    }
-
-    // Build multipart body manually for better compatibility
-    const boundary = '-------314159265358979323846'
-    const delimiter = "\r\n--" + boundary + "\r\n"
-    const closeDelimiter = "\r\n--" + boundary + "--"
-
-    const reader = new FileReader()
-    const fileContent = await new Promise((resolve) => {
-      reader.onload = (e) => resolve(e.target.result)
-      reader.readAsArrayBuffer(file)
-    })
-
-    const body = new Blob([
-      delimiter,
-      'Content-Type: application/json\r\n\r\n',
-      JSON.stringify(metadata),
-      delimiter,
-      'Content-Type: ' + (file.type || 'application/octet-stream') + '\r\n\r\n',
-      fileContent,
-      closeDelimiter
-    ])
-
-    const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
+    // Step 1: Create file metadata
+    const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'multipart/related; boundary=' + boundary
+        'Content-Type': 'application/json'
       },
-      body: body
+      body: JSON.stringify({
+        name: file.name,
+        parents: [folderId]
+      })
     })
+    const fileMetadata = await createResponse.json()
+    console.log('Created file:', fileMetadata)
 
-    return response.json()
+    if (!fileMetadata.id) {
+      throw new Error('Failed to create file: ' + JSON.stringify(fileMetadata))
+    }
+
+    // Step 2: Upload content
+    const uploadResponse = await fetch(
+      `https://www.googleapis.com/upload/drive/v3/files/${fileMetadata.id}?uploadType=media`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': file.type || 'application/octet-stream'
+        },
+        body: file
+      }
+    )
+    const uploadResult = await uploadResponse.json()
+    console.log('Upload result:', uploadResult)
+
+    return { id: fileMetadata.id, webViewLink: `https://drive.google.com/file/d/${fileMetadata.id}/view` }
   }
 
   const handleDrop = useCallback(async (e) => {
