@@ -20,7 +20,7 @@ export default function Dashboard() {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState('')
   const [showSetup, setShowSetup] = useState(false)
-  const [accessToken, setAccessToken] = useState(null)
+  const [accessToken, setAccessToken] = useState(() => localStorage.getItem('gdrive-token'))
   const [clientId, setClientId] = useState(() => localStorage.getItem('gdrive-client-id') || '')
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('gdrive-api-key') || '')
   const tokenClientRef = useRef(null)
@@ -39,6 +39,7 @@ export default function Dashboard() {
         callback: (response) => {
           if (response.access_token) {
             setAccessToken(response.access_token)
+            localStorage.setItem('gdrive-token', response.access_token)
           }
         },
       })
@@ -223,12 +224,14 @@ export default function Dashboard() {
       })
       if (!testResponse.ok) {
         setAccessToken(null)
+        localStorage.removeItem('gdrive-token')
         setUploadStatus('Session expired - please sign in again')
         setTimeout(() => setUploadStatus(''), 3000)
         return
       }
     } catch {
       setAccessToken(null)
+      localStorage.removeItem('gdrive-token')
       setUploadStatus('Session expired - please sign in again')
       setTimeout(() => setUploadStatus(''), 3000)
       return
