@@ -198,10 +198,20 @@ export default function Dashboard() {
     try {
       for (const file of files) {
         const result = await uploadFileToDrive(file)
-        if (result.webViewLink) {
-          const label = file.name.replace(/\.[^/.]+$/, '') // Remove extension
-          addLink(label, result.webViewLink)
-        }
+        console.log('Upload result:', result)
+        const link = result.webViewLink || `https://drive.google.com/file/d/${result.id}/view`
+        const label = file.name.replace(/\.[^/.]+$/, '') // Remove extension
+
+        // Add link directly to state to avoid closure issues
+        setProjects(prev => prev.map(p => {
+          if (p.id === selectedProject.id) {
+            return {
+              ...p,
+              links: [...(p.links || []), { label, url: link }]
+            }
+          }
+          return p
+        }))
       }
       setUploadStatus('Upload complete!')
     } catch (error) {
@@ -211,7 +221,7 @@ export default function Dashboard() {
 
     setIsUploading(false)
     setTimeout(() => setUploadStatus(''), 3000)
-  }, [accessToken, selectedProject, addLink])
+  }, [accessToken, selectedProject])
 
   const handleDragOver = (e) => {
     e.preventDefault()
