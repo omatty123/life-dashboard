@@ -157,16 +157,34 @@ export default function Dashboard() {
       parents: [folderId]
     }
 
-    const form = new FormData()
-    form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }))
-    form.append('file', file)
+    // Build multipart body manually for better compatibility
+    const boundary = '-------314159265358979323846'
+    const delimiter = "\r\n--" + boundary + "\r\n"
+    const closeDelimiter = "\r\n--" + boundary + "--"
+
+    const reader = new FileReader()
+    const fileContent = await new Promise((resolve) => {
+      reader.onload = (e) => resolve(e.target.result)
+      reader.readAsArrayBuffer(file)
+    })
+
+    const body = new Blob([
+      delimiter,
+      'Content-Type: application/json\r\n\r\n',
+      JSON.stringify(metadata),
+      delimiter,
+      'Content-Type: ' + (file.type || 'application/octet-stream') + '\r\n\r\n',
+      fileContent,
+      closeDelimiter
+    ])
 
     const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${accessToken}`
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/related; boundary=' + boundary
       },
-      body: form
+      body: body
     })
 
     return response.json()
@@ -199,6 +217,15 @@ export default function Dashboard() {
       for (const file of files) {
         const result = await uploadFileToDrive(file)
         console.log('Upload result:', result)
+
+        if (result.error) {
+          throw new Error(result.error.message || 'Upload failed')
+        }
+
+        if (!result.id) {
+          throw new Error('No file ID returned')
+        }
+
         const link = result.webViewLink || `https://drive.google.com/file/d/${result.id}/view`
         const label = file.name.replace(/\.[^/.]+$/, '') // Remove extension
 
@@ -212,6 +239,8 @@ export default function Dashboard() {
           }
           return p
         }))
+
+        setUploadStatus(`Uploaded: ${file.name}`)
       }
       setUploadStatus('Upload complete!')
     } catch (error) {
