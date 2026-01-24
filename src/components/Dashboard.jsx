@@ -115,7 +115,7 @@ export default function Dashboard() {
 
   const signIn = () => {
     if (tokenClientRef.current) {
-      tokenClientRef.current.requestAccessToken()
+      tokenClientRef.current.requestAccessToken({ prompt: 'consent' })
     }
   }
 
@@ -212,6 +212,24 @@ export default function Dashboard() {
 
     if (!accessToken) {
       setUploadStatus('Please sign in to Google first')
+      setTimeout(() => setUploadStatus(''), 3000)
+      return
+    }
+
+    // Test if token is still valid
+    try {
+      const testResponse = await fetch('https://www.googleapis.com/drive/v3/about?fields=user', {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      })
+      if (!testResponse.ok) {
+        setAccessToken(null)
+        setUploadStatus('Session expired - please sign in again')
+        setTimeout(() => setUploadStatus(''), 3000)
+        return
+      }
+    } catch {
+      setAccessToken(null)
+      setUploadStatus('Session expired - please sign in again')
       setTimeout(() => setUploadStatus(''), 3000)
       return
     }
