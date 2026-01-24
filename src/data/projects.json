@@ -53,16 +53,56 @@
       ]
     },
     {
+      "id": "bld-hub",
+      "name": "BLD",
+      "subtitle": "Hub",
+      "category": "family",
+      "color": "#8B5CF6",
+      "size": 180,
+      "x": 75,
+      "y": 22,
+      "links": [
+        {"label": "site", "url": "https://omatty123.github.io/banglangdang-hub/"}
+      ]
+    },
+    {
+      "id": "media",
+      "name": "Media",
+      "subtitle": "Dashboard",
+      "category": "family",
+      "color": "#6366F1",
+      "size": 120,
+      "x": 62,
+      "y": 12,
+      "links": [
+        {"label": "site", "url": "https://omatty123.github.io/media-dashboard/"}
+      ]
+    },
+    {
       "id": "gye",
       "name": "GYE",
       "subtitle": "Travel Fund",
       "category": "family",
       "color": "#059669",
-      "size": 130,
-      "x": 72,
+      "size": 120,
+      "x": 88,
       "y": 12,
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/gye-travel-fund/"}
+      ]
+    },
+    {
+      "id": "meals",
+      "name": "Meals",
+      "subtitle": "Planner",
+      "category": "family",
+      "color": "#F59E0B",
+      "textDark": true,
+      "size": 120,
+      "x": 75,
+      "y": 38,
+      "links": [
+        {"label": "app", "url": "https://family-meals-eight.vercel.app/plan/"}
       ]
     },
     {
@@ -71,9 +111,9 @@
       "subtitle": "Book Site",
       "category": "family",
       "color": "#10B981",
-      "size": 150,
-      "x": 82,
-      "y": 25,
+      "size": 130,
+      "x": 60,
+      "y": 48,
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/among-the-dunes/"}
       ]
@@ -84,25 +124,11 @@
       "subtitle": "Loop",
       "category": "family",
       "color": "#047857",
-      "size": 110,
-      "x": 72,
-      "y": 35,
+      "size": 100,
+      "x": 90,
+      "y": 48,
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/chuff-loop-status/"}
-      ]
-    },
-    {
-      "id": "meals",
-      "name": "Meals",
-      "subtitle": "Planner",
-      "category": "play",
-      "color": "#F59E0B",
-      "textDark": true,
-      "size": 160,
-      "x": 78,
-      "y": 62,
-      "links": [
-        {"label": "app", "url": "https://family-meals-eight.vercel.app/plan/"}
       ]
     },
     {
