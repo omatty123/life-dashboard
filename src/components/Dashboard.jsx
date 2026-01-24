@@ -128,12 +128,19 @@ export default function Dashboard() {
       }
     )
     const searchResult = await searchResponse.json()
+    console.log('Folder search result:', searchResult)
+
+    if (searchResult.error) {
+      throw new Error('Folder search failed: ' + searchResult.error.message)
+    }
 
     if (searchResult.files && searchResult.files.length > 0) {
+      console.log('Found existing folder:', searchResult.files[0].id)
       return searchResult.files[0].id
     }
 
     // Create folder
+    console.log('Creating new folder...')
     const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
       method: 'POST',
       headers: {
@@ -146,6 +153,16 @@ export default function Dashboard() {
       })
     })
     const folder = await createResponse.json()
+    console.log('Folder creation result:', folder)
+
+    if (folder.error) {
+      throw new Error('Folder creation failed: ' + folder.error.message)
+    }
+
+    if (!folder.id) {
+      throw new Error('No folder ID returned: ' + JSON.stringify(folder))
+    }
+
     return folder.id
   }
 
@@ -244,7 +261,10 @@ export default function Dashboard() {
       setUploadStatus('Upload complete!')
     } catch (error) {
       console.error('Upload error:', error)
-      setUploadStatus('Upload failed: ' + error.message)
+      setUploadStatus('Error: ' + error.message)
+      // Keep error visible longer
+      setTimeout(() => setUploadStatus(''), 10000)
+      return
     }
 
     setIsUploading(false)
