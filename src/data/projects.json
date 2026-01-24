@@ -1,0 +1,109 @@
+{
+  "projects": [
+    {
+      "id": "hist213",
+      "name": "HIST 213",
+      "subtitle": "East Asia",
+      "category": "classes",
+      "color": "#3B82F6",
+      "size": 160,
+      "x": 10,
+      "y": 15,
+      "links": [
+        {"label": "web", "url": "https://omatty123.github.io/hist213-dashboard/"},
+        {"label": "drive", "url": "https://drive.google.com"}
+      ]
+    },
+    {
+      "id": "chja370",
+      "name": "CHJA 370",
+      "category": "classes",
+      "color": "#2563EB",
+      "size": 120,
+      "x": 25,
+      "y": 22,
+      "links": [
+        {"label": "doc", "url": "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0"}
+      ]
+    },
+    {
+      "id": "montafon",
+      "name": "Montafon",
+      "subtitle": "Moonlight",
+      "category": "translation",
+      "color": "#7C3AED",
+      "size": 180,
+      "x": 8,
+      "y": 58,
+      "links": [
+        {"label": "repo", "url": "https://github.com/omatty123/MontafonMoonlight"}
+      ]
+    },
+    {
+      "id": "buddhist",
+      "name": "Buddhist",
+      "subtitle": "Travel",
+      "category": "translation",
+      "color": "#8B5CF6",
+      "size": 140,
+      "x": 25,
+      "y": 72,
+      "links": [
+        {"label": "drive", "url": "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL"}
+      ]
+    },
+    {
+      "id": "gye",
+      "name": "GYE",
+      "subtitle": "Travel Fund",
+      "category": "family",
+      "color": "#059669",
+      "size": 130,
+      "x": 72,
+      "y": 12,
+      "links": [
+        {"label": "site", "url": "https://omatty123.github.io/gye-travel-fund/"}
+      ]
+    },
+    {
+      "id": "dunes",
+      "name": "Dunes",
+      "subtitle": "Book Site",
+      "category": "family",
+      "color": "#10B981",
+      "size": 150,
+      "x": 82,
+      "y": 25,
+      "links": [
+        {"label": "site", "url": "https://omatty123.github.io/among-the-dunes/"}
+      ]
+    },
+    {
+      "id": "chuff",
+      "name": "Chuff",
+      "subtitle": "Loop",
+      "category": "family",
+      "color": "#047857",
+      "size": 110,
+      "x": 72,
+      "y": 35,
+      "links": [
+        {"label": "site", "url": "https://omatty123.github.io/chuff-loop-status/"}
+      ]
+    },
+    {
+      "id": "meals",
+      "name": "Meals",
+      "subtitle": "Planner",
+      "category": "play",
+      "color": "#F59E0B",
+      "textDark": true,
+      "size": 160,
+      "x": 78,
+      "y": 62,
+      "links": [
+        {"label": "app", "url": "https://family-meals-eight.vercel.app/plan/"}
+      ]
+    }
+  ]
+}
