@@ -5,7 +5,8 @@ const categoryConfig = {
   classes: { label: 'TEACHING', color: '#3B82F6' },
   translation: { label: 'TRANSLATION', color: '#7C3AED' },
   family: { label: 'FAMILY', color: '#10B981' },
-  play: { label: 'PLAY', color: '#F59E0B' }
+  play: { label: 'PLAY', color: '#F59E0B' },
+  reading: { label: 'READING', color: '#EC4899' }
 }
 
 export default function Dashboard() {

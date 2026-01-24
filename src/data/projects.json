@@ -104,6 +104,16 @@
       "links": [
         {"label": "app", "url": "https://family-meals-eight.vercel.app/plan/"}
       ]
+    },
+    {
+      "id": "reading",
+      "name": "Reading",
+      "category": "reading",
+      "color": "#EC4899",
+      "size": 140,
+      "x": 50,
+      "y": 50,
+      "links": []
     }
   ]
 }
