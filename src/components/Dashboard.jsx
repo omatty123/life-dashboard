@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [newLink, setNewLink] = useState({ label: '', url: '' })
   const [isUploading, setIsUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState('')
+  const [isDragging, setIsDragging] = useState(false)
   const [showSetup, setShowSetup] = useState(false)
   const [accessToken, setAccessToken] = useState(() => localStorage.getItem('gdrive-token'))
   const [clientId, setClientId] = useState(() => localStorage.getItem('gdrive-client-id') || '')
@@ -210,35 +211,23 @@ export default function Dashboard() {
   const handleDrop = useCallback(async (e) => {
     e.preventDefault()
     e.stopPropagation()
+    setIsDragging(false)
+
+    console.log('File dropped!')
+    const files = Array.from(e.dataTransfer.files)
+    console.log('Files:', files)
+
+    if (files.length === 0) {
+      setUploadStatus('No files detected')
+      setTimeout(() => setUploadStatus(''), 3000)
+      return
+    }
 
     if (!accessToken) {
       setUploadStatus('Please sign in to Google first')
       setTimeout(() => setUploadStatus(''), 3000)
       return
     }
-
-    // Test if token is still valid
-    try {
-      const testResponse = await fetch('https://www.googleapis.com/drive/v3/about?fields=user', {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-      })
-      if (!testResponse.ok) {
-        setAccessToken(null)
-        localStorage.removeItem('gdrive-token')
-        setUploadStatus('Session expired - please sign in again')
-        setTimeout(() => setUploadStatus(''), 3000)
-        return
-      }
-    } catch {
-      setAccessToken(null)
-      localStorage.removeItem('gdrive-token')
-      setUploadStatus('Session expired - please sign in again')
-      setTimeout(() => setUploadStatus(''), 3000)
-      return
-    }
-
-    const files = Array.from(e.dataTransfer.files)
-    if (files.length === 0) return
 
     // Only process if we're on the Reading project
     if (selectedProject?.category !== 'reading') {
@@ -252,6 +241,7 @@ export default function Dashboard() {
 
     try {
       for (const file of files) {
+        console.log('Uploading:', file.name)
         const result = await uploadFileToDrive(file)
         console.log('Upload result:', result)
 
@@ -259,14 +249,9 @@ export default function Dashboard() {
           throw new Error(result.error.message || 'Upload failed')
         }
 
-        if (!result.id) {
-          throw new Error('No file ID returned')
-        }
-
-        const link = result.webViewLink || `https://drive.google.com/file/d/${result.id}/view`
+        const link = `https://drive.google.com/file/d/${result.id}/view`
         const label = file.name.replace(/\.[^/.]+$/, '') // Remove extension
 
-        // Add link directly to state to avoid closure issues
         setProjects(prev => prev.map(p => {
           if (p.id === selectedProject.id) {
             return {
@@ -280,21 +265,26 @@ export default function Dashboard() {
         setUploadStatus(`Uploaded: ${file.name}`)
       }
       setUploadStatus('Upload complete!')
+      setTimeout(() => setUploadStatus(''), 3000)
     } catch (error) {
       console.error('Upload error:', error)
       setUploadStatus('Error: ' + error.message)
-      // Keep error visible longer
       setTimeout(() => setUploadStatus(''), 10000)
-      return
     }
 
     setIsUploading(false)
-    setTimeout(() => setUploadStatus(''), 3000)
   }, [accessToken, selectedProject])
 
   const handleDragOver = (e) => {
     e.preventDefault()
     e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
   }
 
   const saveSetup = (newClientId, newApiKey) => {
@@ -310,9 +300,10 @@ export default function Dashboard() {
 
   return (
     <div
-      className="min-h-screen bg-[#09090B] text-white flex"
+      className={`min-h-screen bg-[#09090B] text-white flex ${isDragging ? 'ring-4 ring-inset ring-[#3B82F6]' : ''}`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
     >
       {/* Sidebar */}
       <aside className="w-72 border-r border-[#27272A] flex flex-col">
