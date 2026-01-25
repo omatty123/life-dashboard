@@ -234,9 +234,10 @@ function ProjectCard({ project, color, onAddLink, onDeleteLink, onDragStart, onD
   );
 }
 
-function Column({ line, projects, onAddLink, onDeleteLink, onReorder, draggedProject }) {
+function Column({ line, projects, onAddLink, onDeleteLink, onReorder, draggedProject, isSignedIn, onFileDrop }) {
   const lineId = line.id;
   const lineProjects = projects.filter(p => categoryToLine[p.category] === lineId);
+  const isReading = lineId === 'reading';
 
   const handleDragStart = (e, project) => {
     e.dataTransfer.effectAllowed = 'move';
@@ -258,6 +259,11 @@ function Column({ line, projects, onAddLink, onDeleteLink, onReorder, draggedPro
 
   const handleColumnDrop = (e) => {
     e.preventDefault();
+    // Check if it's a file drop for Reading column
+    if (isReading && e.dataTransfer.files.length > 0) {
+      onFileDrop(e);
+      return;
+    }
     const draggedId = e.dataTransfer.getData('text/plain');
     if (draggedId) {
       onReorder(draggedId, null, lineId);
@@ -284,6 +290,13 @@ function Column({ line, projects, onAddLink, onDeleteLink, onReorder, draggedPro
           {lineProjects.length}
         </span>
       </div>
+
+      {/* Drop zone for Reading */}
+      {isReading && isSignedIn && (
+        <div className="border-2 border-dashed border-[#EC4899]/30 rounded-xl p-4 text-center text-[#EC4899]/60 text-sm">
+          Drop files here to upload to Drive
+        </div>
+      )}
 
       {/* Cards */}
       <div className="flex flex-col gap-3">
@@ -379,7 +392,7 @@ export default function LifeMap() {
 
   // Load from localStorage (with version check to force reset on structure changes)
   useEffect(() => {
-    const DATA_VERSION = 3; // Bump this to force localStorage reset
+    const DATA_VERSION = 4; // Bump this to force localStorage reset
     const savedVersion = localStorage.getItem('life-dashboard-version');
 
     if (savedVersion !== String(DATA_VERSION)) {
@@ -603,6 +616,8 @@ export default function LifeMap() {
             onDeleteLink={deleteLink}
             onReorder={reorderProjects}
             draggedProject={draggedProject}
+            isSignedIn={isSignedIn}
+            onFileDrop={handleFileDrop}
           />
         ))}
       </div>
