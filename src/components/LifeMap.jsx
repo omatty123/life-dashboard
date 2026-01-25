@@ -106,7 +106,7 @@ const getLinkIcon = (label) => {
 };
 
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
-const READING_FOLDER_NAME = 'Life Dashboard - Reading';
+const READING_FOLDER_ID = '1NFUcdxxApEFX--H2pb-DHcm4jxBMKIDO';
 
 const initialProjects = [
   { id: "hist213", name: "HIST 213", subtitle: "East Asia", category: "classes", links: [{"label": "web", "url": "https://omatty123.github.io/hist213-dashboard/"}, {"label": "drive", "url": "https://drive.google.com"}] },
@@ -488,25 +488,12 @@ export default function LifeMap() {
     }
   };
 
-  const getOrCreateReadingFolder = async () => {
-    const searchResponse = await fetch(
-      `https://www.googleapis.com/drive/v3/files?q=name='${READING_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false&spaces=drive&fields=files(id,name)`,
-      { headers: { 'Authorization': `Bearer ${accessToken}` } }
-    );
-    const searchResult = await searchResponse.json();
-    if (searchResult.files?.length > 0) return searchResult.files[0].id;
-
-    const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: READING_FOLDER_NAME, mimeType: 'application/vnd.google-apps.folder' })
-    });
-    const folder = await createResponse.json();
-    return folder.id;
+  const getReadingFolder = () => {
+    return READING_FOLDER_ID;
   };
 
   const uploadFileToDrive = async (file) => {
-    const folderId = await getOrCreateReadingFolder();
+    const folderId = getReadingFolder();
     const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
