@@ -1,7 +1,7 @@
-import MetroMap from './components/MetroMap'
+import LifeMap from './components/LifeMap'
 
 function App() {
-  return <MetroMap />
+  return <LifeMap />
 }
 
 export default App
