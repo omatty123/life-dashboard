@@ -114,8 +114,6 @@ const initialProjects = [
   { id: "montafon", name: "Montafon", subtitle: "Moonlight", category: "translation", links: [{"label": "repo", "url": "https://github.com/omatty123/MontafonMoonlight"}] },
   { id: "buddhist", name: "Buddhist", subtitle: "Travel", category: "translation", links: [{"label": "drive", "url": "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL"}] },
   { id: "bld-hub", name: "BLD", subtitle: "Hub", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/banglangdang-hub/"}] },
-  { id: "media", name: "Media", subtitle: "Dashboard", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/media-dashboard/"}] },
-  { id: "gye", name: "GYE", subtitle: "Travel Fund", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/gye-travel-fund/"}] },
   { id: "meals", name: "Meals", subtitle: "Planner", category: "family", links: [{"label": "app", "url": "https://family-meals-eight.vercel.app/plan/"}] },
   { id: "dunes", name: "Dunes", subtitle: "Book Site", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/among-the-dunes/"}] },
   { id: "chuff", name: "Chuff", subtitle: "Loop", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/chuff-loop-status/"}] },
