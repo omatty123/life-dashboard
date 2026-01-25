@@ -492,6 +492,42 @@ export default function LifeMap() {
     return READING_FOLDER_ID;
   };
 
+  // Fetch existing files from Drive folder and sync to Reading links
+  const fetchReadingFiles = useCallback(async () => {
+    if (!accessToken) return;
+
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/drive/v3/files?q='${READING_FOLDER_ID}' in parents and trashed=false&fields=files(id,name)&orderBy=createdTime desc`,
+        { headers: { 'Authorization': `Bearer ${accessToken}` } }
+      );
+      const data = await response.json();
+
+      if (data.files && data.files.length > 0) {
+        const driveLinks = data.files.map(file => ({
+          label: file.name.replace(/\.[^/.]+$/, ''),
+          url: `https://drive.google.com/file/d/${file.id}/view`
+        }));
+
+        setProjects(prev => prev.map(p => {
+          if (p.id === 'reading') {
+            return { ...p, links: driveLinks };
+          }
+          return p;
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to fetch reading files:', error);
+    }
+  }, [accessToken]);
+
+  // Fetch Reading files when signed in
+  useEffect(() => {
+    if (accessToken) {
+      fetchReadingFiles();
+    }
+  }, [accessToken, fetchReadingFiles]);
+
   const uploadFileToDrive = async (file) => {
     const folderId = getReadingFolder();
     const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
@@ -525,18 +561,16 @@ export default function LifeMap() {
     setUploadStatus('Uploading...');
     try {
       for (const file of files) {
-        const result = await uploadFileToDrive(file);
-        const link = `https://drive.google.com/file/d/${result.id}/view`;
-        const label = file.name.replace(/\.[^/.]+$/, '');
-        addLink('reading', label, link);
+        await uploadFileToDrive(file);
       }
+      await fetchReadingFiles(); // Refresh the list from Drive
       setUploadStatus('Done!');
       setTimeout(() => setUploadStatus(''), 2000);
     } catch (error) {
       setUploadStatus('Error: ' + error.message);
       setTimeout(() => setUploadStatus(''), 5000);
     }
-  }, [accessToken, addLink]);
+  }, [accessToken, fetchReadingFiles]);
 
   const saveSetup = (newClientId) => {
     localStorage.setItem('gdrive-client-id', newClientId);
