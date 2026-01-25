@@ -116,7 +116,7 @@ const initialProjects = [
   { id: "bld-hub", name: "BLD", subtitle: "Hub", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/banglangdang-hub/"}] },
   { id: "dunes", name: "Dunes", subtitle: "Book Site", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/among-the-dunes/"}] },
   { id: "chuff", name: "Chuff", subtitle: "Loop", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/chuff-loop-status/"}] },
-  { id: "reading", name: "Reading", category: "reading", links: [] }
+  { id: "reading", name: "Reading", category: "reading", links: [{"label": "firebase", "url": "https://console.firebase.google.com/u/0/project/media-dashboard-bf3e9/settings/general/web:N2U0ODRiZTYtOTE5OS00MGJhLTg0OWItNDQ3OThkYmZjODg3?nonce=1769293607565"}] }
 ];
 
 function AddLinkModal({ project, color, onClose, onAdd }) {
@@ -379,7 +379,7 @@ export default function LifeMap() {
 
   // Load from localStorage (with version check to force reset on structure changes)
   useEffect(() => {
-    const DATA_VERSION = 2; // Bump this to force localStorage reset
+    const DATA_VERSION = 3; // Bump this to force localStorage reset
     const savedVersion = localStorage.getItem('life-dashboard-version');
 
     if (savedVersion !== String(DATA_VERSION)) {
