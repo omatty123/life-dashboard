@@ -377,8 +377,19 @@ export default function LifeMap() {
     return () => { document.body.removeChild(script); };
   }, [clientId]);
 
-  // Load from localStorage
+  // Load from localStorage (with version check to force reset on structure changes)
   useEffect(() => {
+    const DATA_VERSION = 2; // Bump this to force localStorage reset
+    const savedVersion = localStorage.getItem('life-dashboard-version');
+
+    if (savedVersion !== String(DATA_VERSION)) {
+      // Version mismatch - clear old data and use fresh
+      localStorage.removeItem('life-dashboard-projects');
+      localStorage.setItem('life-dashboard-version', String(DATA_VERSION));
+      setProjects(initialProjects);
+      return;
+    }
+
     const saved = localStorage.getItem('life-dashboard-projects');
     if (saved) {
       try {
