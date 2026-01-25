@@ -1,7 +1,7 @@
-import LifeMap from './components/LifeMap'
+import Dashboard from './components/Dashboard'
 
 function App() {
-  return <LifeMap />
+  return <Dashboard />
 }
 
 export default App
