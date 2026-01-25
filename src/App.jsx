@@ -1,7 +1,7 @@
-import Dashboard from './components/Dashboard'
+import MetroMap from './components/MetroMap'
 
 function App() {
-  return <Dashboard />
+  return <MetroMap />
 }
 
 export default App

@@ -1,145 +1,129 @@
 {
-  "projects": [
+  "lines": [
     {
-      "id": "hist213",
+      "id": "teaching",
+      "name": "Teaching",
+      "color": "#3B82F6",
+      "stations": ["hist213", "chja370"]
+    },
+    {
+      "id": "translation",
+      "name": "Translation",
+      "color": "#8B5CF6",
+      "stations": ["montafon", "buddhist"]
+    },
+    {
+      "id": "family",
+      "name": "Family",
+      "color": "#10B981",
+      "stations": ["bld-hub", "dunes", "chuff"]
+    },
+    {
+      "id": "reading",
+      "name": "Reading",
+      "color": "#EC4899",
+      "stations": ["reading"]
+    }
+  ],
+  "stations": {
+    "hist213": {
       "name": "HIST 213",
       "subtitle": "East Asia",
-      "category": "classes",
-      "color": "#3B82F6",
-      "size": 160,
-      "x": 10,
-      "y": 15,
+      "x": 150,
+      "y": 100,
       "links": [
         {"label": "web", "url": "https://omatty123.github.io/hist213-dashboard/"},
         {"label": "drive", "url": "https://drive.google.com"}
       ]
     },
-    {
-      "id": "chja370",
+    "chja370": {
       "name": "CHJA 370",
-      "category": "classes",
-      "color": "#2563EB",
-      "size": 120,
-      "x": 25,
-      "y": 22,
+      "x": 350,
+      "y": 100,
       "links": [
         {"label": "doc", "url": "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0"}
       ]
     },
-    {
-      "id": "montafon",
+    "montafon": {
       "name": "Montafon",
       "subtitle": "Moonlight",
-      "category": "translation",
-      "color": "#7C3AED",
-      "size": 180,
-      "x": 8,
-      "y": 58,
+      "x": 100,
+      "y": 250,
       "links": [
         {"label": "repo", "url": "https://github.com/omatty123/MontafonMoonlight"}
       ]
     },
-    {
-      "id": "buddhist",
+    "buddhist": {
       "name": "Buddhist",
       "subtitle": "Travel",
-      "category": "translation",
-      "color": "#8B5CF6",
-      "size": 140,
-      "x": 25,
-      "y": 72,
+      "x": 300,
+      "y": 250,
       "links": [
         {"label": "drive", "url": "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL"}
       ]
     },
-    {
-      "id": "bld-hub",
-      "name": "BLD",
-      "subtitle": "Hub",
-      "category": "family",
-      "color": "#8B5CF6",
-      "size": 180,
-      "x": 75,
-      "y": 22,
+    "bld-hub": {
+      "name": "BLD Hub",
+      "x": 500,
+      "y": 400,
+      "children": ["media", "meals", "gye"],
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/banglangdang-hub/"}
       ]
     },
-    {
-      "id": "media",
+    "media": {
       "name": "Media",
       "subtitle": "Dashboard",
-      "category": "family",
-      "color": "#6366F1",
-      "size": 120,
-      "x": 62,
-      "y": 12,
+      "x": 400,
+      "y": 500,
+      "parent": "bld-hub",
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/media-dashboard/"}
       ]
     },
-    {
-      "id": "gye",
-      "name": "GYE",
-      "subtitle": "Travel Fund",
-      "category": "family",
-      "color": "#059669",
-      "size": 120,
-      "x": 88,
-      "y": 12,
-      "links": [
-        {"label": "site", "url": "https://omatty123.github.io/gye-travel-fund/"}
-      ]
-    },
-    {
-      "id": "meals",
+    "meals": {
       "name": "Meals",
       "subtitle": "Planner",
-      "category": "family",
-      "color": "#F59E0B",
-      "textDark": true,
-      "size": 120,
-      "x": 75,
-      "y": 38,
+      "x": 500,
+      "y": 500,
+      "parent": "bld-hub",
       "links": [
         {"label": "app", "url": "https://family-meals-eight.vercel.app/plan/"}
       ]
     },
-    {
-      "id": "dunes",
+    "gye": {
+      "name": "GYE",
+      "subtitle": "Travel Fund",
+      "x": 600,
+      "y": 500,
+      "parent": "bld-hub",
+      "links": [
+        {"label": "site", "url": "https://omatty123.github.io/gye-travel-fund/"}
+      ]
+    },
+    "dunes": {
       "name": "Dunes",
       "subtitle": "Book Site",
-      "category": "family",
-      "color": "#10B981",
-      "size": 130,
-      "x": 60,
-      "y": 48,
+      "x": 700,
+      "y": 400,
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/among-the-dunes/"}
       ]
     },
-    {
-      "id": "chuff",
+    "chuff": {
       "name": "Chuff",
       "subtitle": "Loop",
-      "category": "family",
-      "color": "#047857",
-      "size": 100,
-      "x": 90,
-      "y": 48,
+      "x": 850,
+      "y": 400,
       "links": [
         {"label": "site", "url": "https://omatty123.github.io/chuff-loop-status/"}
       ]
     },
-    {
-      "id": "reading",
+    "reading": {
       "name": "Reading",
-      "category": "reading",
-      "color": "#EC4899",
-      "size": 140,
-      "x": 50,
-      "y": 50,
+      "x": 500,
+      "y": 600,
       "links": []
     }
-  ]
+  }
 }
