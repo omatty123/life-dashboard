@@ -163,7 +163,10 @@
       "size": 160,
       "x": 42,
       "y": 78,
-      "links": []
+      "links": [
+        {"label": "pitch", "url": "https://omatty123.github.io/pere-goriot-pitch/"},
+        {"label": "tools", "url": "https://omatty123.github.io/pere-goriot-resources/"}
+      ]
     }
   ]
 }
