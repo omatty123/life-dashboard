@@ -6,7 +6,8 @@ const categoryConfig = {
   translation: { label: 'TRANSLATION', color: '#7C3AED' },
   family: { label: 'FAMILY', color: '#10B981' },
   play: { label: 'PLAY', color: '#F59E0B' },
-  reading: { label: 'READING', color: '#EC4899' }
+  reading: { label: 'READING', color: '#EC4899' },
+  creative: { label: 'CREATIVE', color: '#DC2626' }
 }
 
 const SCOPES = 'https://www.googleapis.com/auth/drive.file'
@@ -57,9 +58,24 @@ export default function Dashboard() {
     const saved = localStorage.getItem('life-dashboard-projects')
     if (saved) {
       const savedProjects = JSON.parse(saved)
-      const savedIds = new Set(savedProjects.map(p => p.id))
-      const newProjects = initialData.projects.filter(p => !savedIds.has(p.id))
-      setProjects([...savedProjects, ...newProjects])
+      const savedMap = new Map(savedProjects.map(p => [p.id, p]))
+      // Merge: use initialData as base, overlay saved data (preserving user edits)
+      const merged = initialData.projects.map(initial => {
+        const saved = savedMap.get(initial.id)
+        if (saved) {
+          // Keep saved positions/sizes but use initialData links if saved has none
+          return {
+            ...initial,
+            ...saved,
+            links: saved.links?.length ? saved.links : initial.links
+          }
+        }
+        return initial
+      })
+      // Add any saved projects not in initialData
+      const initialIds = new Set(initialData.projects.map(p => p.id))
+      const extras = savedProjects.filter(p => !initialIds.has(p.id))
+      setProjects([...merged, ...extras])
     } else {
       setProjects(initialData.projects)
     }
