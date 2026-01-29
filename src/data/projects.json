@@ -132,6 +132,19 @@
       ]
     },
     {
+      "id": "plastic-man",
+      "name": "Plastic",
+      "subtitle": "Man",
+      "category": "family",
+      "color": "#00853F",
+      "size": 140,
+      "x": 75,
+      "y": 62,
+      "links": [
+        {"label": "site", "url": "https://plastic-man-site.vercel.app"}
+      ]
+    },
+    {
       "id": "reading",
       "name": "Reading",
       "category": "reading",
