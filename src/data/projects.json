@@ -153,6 +153,17 @@
       "x": 50,
       "y": 50,
       "links": []
+    },
+    {
+      "id": "pere-goriot",
+      "name": "Père Goriot",
+      "subtitle": "Screenplay",
+      "category": "creative",
+      "color": "#DC2626",
+      "size": 160,
+      "x": 42,
+      "y": 78,
+      "links": []
     }
   ]
 }
