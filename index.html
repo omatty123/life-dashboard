@@ -1,13 +1,491 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LIFE</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIFE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0b;
+      --surface: #121214;
+      --surface-hover: #1a1a1d;
+      --border: #2a2a2d;
+      --text: #fafafa;
+      --text-muted: #71717a;
+      --teaching: #3b82f6;
+      --translation: #a855f7;
+      --family: #10b981;
+      --reading: #ec4899;
+      --creative: #ef4444;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    header {
+      margin-bottom: 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 4rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .categories {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .category {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .category-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .project {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+      cursor: grab;
+    }
+
+    .project:hover {
+      background: var(--surface-hover);
+      border-color: #3a3a3d;
+      transform: translateY(-2px);
+    }
+
+    .project.dragging {
+      opacity: 0.5;
+      cursor: grabbing;
+      transform: scale(1.02);
+    }
+
+    .project.drag-over {
+      border-color: #fff;
+      background: var(--surface-hover);
+    }
+
+    .project-title {
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .project-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #4a4a4d;
+    }
+
+    .link svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.7;
+    }
+
+    /* Category colors */
+    .category-teaching .category-dot { background: var(--teaching); }
+    .category-translation .category-dot { background: var(--translation); }
+    .category-family .category-dot { background: var(--family); }
+    .category-reading .category-dot { background: var(--reading); }
+    .category-creative .category-dot { background: var(--creative); }
+
+    .category-teaching .link:hover { border-color: var(--teaching); }
+    .category-translation .link:hover { border-color: var(--translation); }
+    .category-family .link:hover { border-color: var(--family); }
+    .category-reading .link:hover { border-color: var(--reading); }
+    .category-creative .link:hover { border-color: var(--creative); }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .category {
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .category:nth-child(1) { animation-delay: 0.1s; }
+    .category:nth-child(2) { animation-delay: 0.2s; }
+    .category:nth-child(3) { animation-delay: 0.3s; }
+    .category:nth-child(4) { animation-delay: 0.4s; }
+    .category:nth-child(5) { animation-delay: 0.5s; }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 2rem 1rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Life</h1>
+      <span class="tagline">Everything at a glance</span>
+    </header>
+
+    <div class="categories" id="categories"></div>
+  </div>
+
+  <script>
+    const projects = [
+      {
+        id: "hist213",
+        name: "HIST 213",
+        subtitle: "East Asia",
+        category: "teaching",
+        links: [
+          { label: "web", url: "https://omatty123.github.io/hist213-dashboard/", icon: "globe" },
+          { label: "drive", url: "https://drive.google.com", icon: "folder" }
+        ]
+      },
+      {
+        id: "chja370",
+        name: "CHJA 370",
+        category: "teaching",
+        links: [
+          { label: "doc", url: "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0", icon: "doc" }
+        ]
+      },
+      {
+        id: "montafon",
+        name: "Montafon",
+        subtitle: "Moonlight",
+        category: "translation",
+        links: [
+          { label: "repo", url: "https://github.com/omatty123/MontafonMoonlight", icon: "github" }
+        ]
+      },
+      {
+        id: "buddhist",
+        name: "Buddhist",
+        subtitle: "Travel",
+        category: "translation",
+        links: [
+          { label: "drive", url: "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL", icon: "folder" }
+        ]
+      },
+      {
+        id: "bld-hub",
+        name: "BLD",
+        subtitle: "Hub",
+        category: "family",
+        links: [
+          { label: "site", url: "https://omatty123.github.io/banglangdang-hub/", icon: "globe" }
+        ]
+      },
+      {
+        id: "media",
+        name: "Media",
+        subtitle: "Dashboard",
+        category: "family",
+        links: [
+          { label: "site", url: "https://omatty123.github.io/media-dashboard/", icon: "globe" }
+        ]
+      },
+      {
+        id: "gye",
+        name: "GYE",
+        subtitle: "Travel Fund",
+        category: "family",
+        links: [
+          { label: "site", url: "https://omatty123.github.io/gye-travel-fund/", icon: "globe" }
+        ]
+      },
+      {
+        id: "meals",
+        name: "Meals",
+        subtitle: "Planner",
+        category: "family",
+        links: [
+          { label: "app", url: "https://family-meals-eight.vercel.app/plan/", icon: "globe" }
+        ]
+      },
+      {
+        id: "dunes",
+        name: "Dunes",
+        subtitle: "Book Site",
+        category: "family",
+        links: [
+          { label: "site", url: "https://omatty123.github.io/among-the-dunes/", icon: "globe" }
+        ]
+      },
+      {
+        id: "chuff",
+        name: "Chuff",
+        subtitle: "Loop",
+        category: "family",
+        links: [
+          { label: "site", url: "https://omatty123.github.io/chuff-loop-status/", icon: "globe" }
+        ]
+      },
+      {
+        id: "plastic-man",
+        name: "Plastic Man",
+        subtitle: "Modou Fall",
+        category: "family",
+        links: [
+          { label: "site", url: "https://plastic-man-site.vercel.app", icon: "globe" }
+        ]
+      },
+      {
+        id: "reading",
+        name: "Reading",
+        category: "reading",
+        links: []
+      },
+      {
+        id: "pere-goriot",
+        name: "Père Goriot",
+        subtitle: "Screenplay",
+        category: "creative",
+        links: [
+          { label: "pitch", url: "https://omatty123.github.io/pere-goriot-pitch/", icon: "globe" },
+          { label: "tools", url: "https://omatty123.github.io/pere-goriot-resources/", icon: "globe" }
+        ]
+      }
+    ];
+
+    const icons = {
+      globe: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
+      folder: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`,
+      doc: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+      github: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`
+    };
+
+    const categoryLabels = {
+      teaching: "Teaching",
+      translation: "Translation",
+      family: "Family",
+      reading: "Reading",
+      creative: "Creative"
+    };
+
+    const categoryOrder = ["teaching", "translation", "family", "reading", "creative"];
+
+    function render() {
+      const container = document.getElementById("categories");
+      const grouped = {};
+
+      projects.forEach(p => {
+        if (!grouped[p.category]) grouped[p.category] = [];
+        grouped[p.category].push(p);
+      });
+
+      categoryOrder.forEach(cat => {
+        if (!grouped[cat]) return;
+
+        const section = document.createElement("section");
+        section.className = `category category-${cat}`;
+
+        section.innerHTML = `
+          <div class="category-header">
+            <span class="category-dot"></span>
+            <span class="category-name">${categoryLabels[cat]}</span>
+          </div>
+          <div class="projects-grid">
+            ${grouped[cat].map(p => `
+              <article class="project" draggable="true" data-id="${p.id}">
+                <h3 class="project-title">${p.name}</h3>
+                ${p.subtitle ? `<p class="project-subtitle">${p.subtitle}</p>` : '<p class="project-subtitle">&nbsp;</p>'}
+                <div class="project-links">
+                  ${p.links.map(l => `
+                    <a href="${l.url}" target="_blank" rel="noopener" class="link">
+                      ${icons[l.icon] || icons.globe}
+                      ${l.label}
+                    </a>
+                  `).join('')}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `;
+
+        container.appendChild(section);
+      });
+    }
+
+    // Load saved order from localStorage
+    const savedOrder = localStorage.getItem('life-dashboard-order');
+    if (savedOrder) {
+      const order = JSON.parse(savedOrder);
+      projects.sort((a, b) => {
+        const aIndex = order.indexOf(a.id);
+        const bIndex = order.indexOf(b.id);
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      });
+    }
+
+    render();
+
+    // Drag and drop
+    let draggedEl = null;
+    let draggedId = null;
+
+    document.addEventListener('dragstart', (e) => {
+      if (!e.target.classList.contains('project')) return;
+      draggedEl = e.target;
+      draggedId = e.target.dataset.id;
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+
+    document.addEventListener('dragend', (e) => {
+      if (!e.target.classList.contains('project')) return;
+      e.target.classList.remove('dragging');
+      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      draggedEl = null;
+      draggedId = null;
+    });
+
+    document.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const target = e.target.closest('.project');
+      if (!target || target === draggedEl) return;
+      target.classList.add('drag-over');
+    });
+
+    document.addEventListener('dragleave', (e) => {
+      const target = e.target.closest('.project');
+      if (target) target.classList.remove('drag-over');
+    });
+
+    document.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const target = e.target.closest('.project');
+      if (!target || target === draggedEl) return;
+
+      target.classList.remove('drag-over');
+
+      // DOM swap - just move the elements
+      const parent = target.parentNode;
+      const draggedRect = draggedEl.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      if (draggedRect.top < targetRect.top) {
+        parent.insertBefore(draggedEl, target.nextSibling);
+      } else {
+        parent.insertBefore(draggedEl, target);
+      }
+
+      // Update projects array order based on DOM
+      const allCards = document.querySelectorAll('.project');
+      const newOrder = Array.from(allCards).map(el => el.dataset.id);
+      localStorage.setItem('life-dashboard-order', JSON.stringify(newOrder));
+    });
+  </script>
+</body>
 </html>
