@@ -177,54 +177,51 @@
 
     .project {
       background: white;
-      border-radius: 8px;
-      padding: 0.6rem 0.75rem;
+      border-radius: 6px;
+      padding: 0.35rem 0.5rem;
       cursor: grab;
       transition: all 0.15s ease;
       border: 1px solid #e0e8d8;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .project:hover {
-      transform: translateX(2px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: #f8fdf5;
       border-color: var(--grass-light);
     }
 
-    .project.dragging {
-      opacity: 0.5;
-      cursor: grabbing;
-    }
+    .project.dragging { opacity: 0.5; cursor: grabbing; }
+    .project.drag-over { border-color: var(--grass); background: #f0f8e8; }
 
-    .project.drag-over {
-      border-color: var(--grass);
-      background: #f0f8e8;
-    }
+    .project-info { flex: 1; min-width: 0; }
 
     .project-title {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 0.1rem;
+      line-height: 1.2;
     }
 
     .project-subtitle {
       font-size: 0.65rem;
       color: var(--text-light);
-      margin-bottom: 0.4rem;
+      font-weight: 400;
     }
 
     .project-links {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem;
+      gap: 0.2rem;
+      flex-shrink: 0;
     }
 
     .link {
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
-      padding: 0.2rem 0.5rem;
-      font-size: 0.65rem;
+      gap: 0.2rem;
+      padding: 0.15rem 0.4rem;
+      font-size: 0.6rem;
       font-weight: 500;
       color: var(--text);
       background: #f0f8e8;
@@ -241,8 +238,8 @@
     }
 
     .link svg {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
     }
 
     @keyframes fadeIn {
@@ -377,10 +374,11 @@
           <div class="projects-grid">
             ${grouped[cat].map(p => `
               <article class="project" draggable="true" data-id="${p.id}">
-                <h3 class="project-title">${p.name}</h3>
-                ${p.subtitle ? `<p class="project-subtitle">${p.subtitle}</p>` : '<p class="project-subtitle">&nbsp;</p>'}
+                <div class="project-info">
+                  <div class="project-title">${p.name}${p.subtitle ? ` <span class="project-subtitle">${p.subtitle}</span>` : ''}</div>
+                </div>
                 <div class="project-links">
-                  ${p.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="link">${icons[l.icon] || icons.globe} ${l.label}</a>`).join('')}
+                  ${p.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="link">${l.label}</a>`).join('')}
                 </div>
               </article>
             `).join('')}
