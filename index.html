@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LIFE</title>
+  <title>Life Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -15,127 +15,199 @@
     }
 
     :root {
-      --bg: #0a0a0b;
-      --surface: #121214;
-      --surface-hover: #1a1a1d;
-      --border: #2a2a2d;
-      --text: #fafafa;
-      --text-muted: #71717a;
-      --teaching: #3b82f6;
-      --translation: #a855f7;
-      --family: #10b981;
-      --reading: #ec4899;
-      --creative: #ef4444;
+      --grass-light: #90c95a;
+      --grass: #6db33f;
+      --grass-dark: #4a8c2a;
+      --sky: #87ceeb;
+      --sky-light: #b5e3f5;
+      --path: #d4c4a8;
+      --wood: #a0522d;
+      --text: #2d4a1c;
+      --text-light: #4a6b2d;
+      --white: #fff;
+      --shadow: rgba(45, 74, 28, 0.15);
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Nunito', sans-serif;
       min-height: 100vh;
-      line-height: 1.5;
+      background: linear-gradient(180deg, var(--sky-light) 0%, var(--sky) 30%, var(--grass-light) 30%, var(--grass) 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .clouds {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 30vh;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .cloud {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.9;
+      animation: float 60s linear infinite;
+    }
+
+    .cloud::before, .cloud::after {
+      content: '';
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .cloud-1 { width: 100px; height: 40px; top: 10%; left: -100px; animation-duration: 45s; }
+    .cloud-1::before { width: 50px; height: 50px; top: -25px; left: 15px; }
+    .cloud-1::after { width: 60px; height: 60px; top: -30px; left: 45px; }
+
+    .cloud-2 { width: 120px; height: 50px; top: 5%; left: -120px; animation-duration: 55s; animation-delay: -20s; }
+    .cloud-2::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+    .cloud-2::after { width: 70px; height: 70px; top: -35px; left: 55px; }
+
+    .cloud-3 { width: 80px; height: 35px; top: 15%; left: -80px; animation-duration: 50s; animation-delay: -35s; }
+    .cloud-3::before { width: 45px; height: 45px; top: -20px; left: 10px; }
+    .cloud-3::after { width: 50px; height: 50px; top: -25px; left: 35px; }
+
+    @keyframes float {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(100vw + 200px)); }
+    }
+
+    .sun {
+      position: fixed;
+      top: 5%;
+      right: 10%;
+      width: 80px;
+      height: 80px;
+      background: #ffd700;
+      border-radius: 50%;
+      box-shadow: 0 0 60px #ffd700, 0 0 100px rgba(255, 215, 0, 0.5);
+      z-index: 0;
     }
 
     .container {
+      position: relative;
+      z-index: 1;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 3rem 2rem;
+      padding: 2rem;
     }
 
     header {
-      margin-bottom: 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-top: 1rem;
     }
 
     h1 {
-      font-family: 'Instrument Serif', serif;
-      font-size: 4rem;
-      font-weight: 400;
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--white);
+      text-shadow: 3px 3px 0 var(--grass-dark), 0 4px 20px rgba(0,0,0,0.2);
       letter-spacing: -0.02em;
     }
 
     .tagline {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: 1.1rem;
+      color: var(--white);
+      text-shadow: 1px 1px 2px var(--grass-dark);
+      margin-top: 0.5rem;
+      font-weight: 600;
     }
 
     .categories {
       display: flex;
       flex-direction: column;
-      gap: 3rem;
+      gap: 2.5rem;
     }
 
     .category {
-      display: grid;
-      gap: 1rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px var(--shadow), 0 2px 8px rgba(0,0,0,0.05);
+      border: 3px solid rgba(255,255,255,0.5);
     }
 
     .category-header {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
 
-    .category-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+    .category-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
     }
+
+    .category-teaching .category-icon { background: linear-gradient(135deg, #4a90d9, #357abd); }
+    .category-translation .category-icon { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+    .category-family .category-icon { background: linear-gradient(135deg, #27ae60, #1e8449); }
+    .category-reading .category-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+    .category-creative .category-icon { background: linear-gradient(135deg, #f39c12, #d68910); }
 
     .category-name {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
     }
 
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1rem;
     }
 
     .project {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      background: white;
+      border-radius: 14px;
       padding: 1.25rem;
-      transition: all 0.2s ease;
       cursor: grab;
+      transition: all 0.2s ease;
+      border: 2px solid #e8f0e0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
     .project:hover {
-      background: var(--surface-hover);
-      border-color: #3a3a3d;
-      transform: translateY(-2px);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      border-color: var(--grass-light);
     }
 
     .project.dragging {
       opacity: 0.5;
       cursor: grabbing;
-      transform: scale(1.02);
     }
 
     .project.drag-over {
-      border-color: #fff;
-      background: var(--surface-hover);
+      border-color: var(--grass);
+      background: #f0f8e8;
     }
 
     .project-title {
-      font-size: 1.125rem;
-      font-weight: 500;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
       margin-bottom: 0.25rem;
     }
 
     .project-subtitle {
-      font-size: 0.875rem;
-      color: var(--text-muted);
+      font-size: 0.9rem;
+      color: var(--text-light);
       margin-bottom: 1rem;
     }
 
@@ -149,46 +221,33 @@
       display: inline-flex;
       align-items: center;
       gap: 0.375rem;
-      padding: 0.375rem 0.75rem;
-      font-size: 0.8125rem;
-      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
       color: var(--text);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      border-radius: 6px;
+      background: linear-gradient(135deg, #f0f8e8, #e8f4dc);
+      border: 2px solid #d4e8c4;
+      border-radius: 8px;
       text-decoration: none;
       transition: all 0.15s ease;
     }
 
     .link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: #4a4a4d;
+      background: linear-gradient(135deg, var(--grass-light), var(--grass));
+      border-color: var(--grass);
+      color: white;
+      transform: scale(1.05);
     }
 
     .link svg {
       width: 14px;
       height: 14px;
-      opacity: 0.7;
     }
 
-    /* Category colors */
-    .category-teaching .category-dot { background: var(--teaching); }
-    .category-translation .category-dot { background: var(--translation); }
-    .category-family .category-dot { background: var(--family); }
-    .category-reading .category-dot { background: var(--reading); }
-    .category-creative .category-dot { background: var(--creative); }
-
-    .category-teaching .link:hover { border-color: var(--teaching); }
-    .category-translation .link:hover { border-color: var(--translation); }
-    .category-family .link:hover { border-color: var(--family); }
-    .category-reading .link:hover { border-color: var(--reading); }
-    .category-creative .link:hover { border-color: var(--creative); }
-
-    /* Animations */
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
       }
       to {
         opacity: 1;
@@ -208,191 +267,112 @@
     .category:nth-child(5) { animation-delay: 0.5s; }
 
     @media (max-width: 640px) {
-      .container {
-        padding: 2rem 1rem;
-      }
-
-      h1 {
-        font-size: 2.5rem;
-      }
-
-      header {
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 3rem;
-      }
-
-      .projects-grid {
-        grid-template-columns: 1fr;
-      }
+      .container { padding: 1rem; }
+      h1 { font-size: 2.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .sun { width: 50px; height: 50px; top: 2%; right: 5%; }
     }
   </style>
 </head>
 <body>
+  <div class="sun"></div>
+  <div class="clouds">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
   <div class="container">
     <header>
-      <h1>Life</h1>
-      <span class="tagline">Everything at a glance</span>
+      <h1>🌳 Life Dashboard</h1>
+      <p class="tagline">Everything growing nicely</p>
     </header>
-
     <div class="categories" id="categories"></div>
   </div>
 
   <script>
     const projects = [
-      {
-        id: "hist213",
-        name: "HIST 213",
-        subtitle: "East Asia",
-        category: "teaching",
-        links: [
-          { label: "web", url: "https://omatty123.github.io/hist213-dashboard/", icon: "globe" },
-          { label: "drive", url: "https://drive.google.com", icon: "folder" }
-        ]
-      },
-      {
-        id: "chja370",
-        name: "CHJA 370",
-        category: "teaching",
-        links: [
-          { label: "doc", url: "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0", icon: "doc" }
-        ]
-      },
-      {
-        id: "montafon",
-        name: "Montafon",
-        subtitle: "Moonlight",
-        category: "translation",
-        links: [
-          { label: "repo", url: "https://github.com/omatty123/MontafonMoonlight", icon: "github" }
-        ]
-      },
-      {
-        id: "buddhist",
-        name: "Buddhist",
-        subtitle: "Travel",
-        category: "translation",
-        links: [
-          { label: "drive", url: "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL", icon: "folder" }
-        ]
-      },
-      {
-        id: "bld-hub",
-        name: "BLD",
-        subtitle: "Hub",
-        category: "family",
-        links: [
-          { label: "site", url: "https://omatty123.github.io/banglangdang-hub/", icon: "globe" }
-        ]
-      },
-      {
-        id: "media",
-        name: "Media",
-        subtitle: "Dashboard",
-        category: "family",
-        links: [
-          { label: "site", url: "https://omatty123.github.io/media-dashboard/", icon: "globe" }
-        ]
-      },
-      {
-        id: "gye",
-        name: "GYE",
-        subtitle: "Travel Fund",
-        category: "family",
-        links: [
-          { label: "site", url: "https://omatty123.github.io/gye-travel-fund/", icon: "globe" }
-        ]
-      },
-      {
-        id: "meals",
-        name: "Meals",
-        subtitle: "Planner",
-        category: "family",
-        links: [
-          { label: "app", url: "https://family-meals-eight.vercel.app/plan/", icon: "globe" }
-        ]
-      },
-      {
-        id: "dunes",
-        name: "Dunes",
-        subtitle: "Book Site",
-        category: "family",
-        links: [
-          { label: "site", url: "https://omatty123.github.io/among-the-dunes/", icon: "globe" }
-        ]
-      },
-      {
-        id: "chuff",
-        name: "Chuff",
-        subtitle: "Loop",
-        category: "family",
-        links: [
-          { label: "site", url: "https://omatty123.github.io/chuff-loop-status/", icon: "globe" }
-        ]
-      },
-      {
-        id: "plastic-man",
-        name: "Plastic Man",
-        subtitle: "Modou Fall",
-        category: "family",
-        links: [
-          { label: "site", url: "https://plastic-man-site.vercel.app", icon: "globe" }
-        ]
-      },
-      {
-        id: "reading",
-        name: "Reading",
-        category: "reading",
-        links: []
-      },
-      {
-        id: "pere-goriot",
-        name: "Père Goriot",
-        subtitle: "Screenplay",
-        category: "creative",
-        links: [
-          { label: "pitch", url: "https://omatty123.github.io/pere-goriot-pitch/", icon: "globe" },
-          { label: "tools", url: "https://omatty123.github.io/pere-goriot-resources/", icon: "globe" }
-        ]
-      }
+      { id: "hist213", name: "HIST 213", subtitle: "East Asia", category: "teaching", links: [
+        { label: "web", url: "https://omatty123.github.io/hist213-dashboard/", icon: "globe" },
+        { label: "drive", url: "https://drive.google.com", icon: "folder" }
+      ]},
+      { id: "chja370", name: "CHJA 370", category: "teaching", links: [
+        { label: "doc", url: "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0", icon: "doc" }
+      ]},
+      { id: "montafon", name: "Montafon", subtitle: "Moonlight", category: "translation", links: [
+        { label: "repo", url: "https://github.com/omatty123/MontafonMoonlight", icon: "github" }
+      ]},
+      { id: "buddhist", name: "Buddhist", subtitle: "Travel", category: "translation", links: [
+        { label: "drive", url: "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL", icon: "folder" }
+      ]},
+      { id: "bld-hub", name: "BLD", subtitle: "Hub", category: "family", links: [
+        { label: "site", url: "https://omatty123.github.io/banglangdang-hub/", icon: "globe" }
+      ]},
+      { id: "media", name: "Media", subtitle: "Dashboard", category: "family", links: [
+        { label: "site", url: "https://omatty123.github.io/media-dashboard/", icon: "globe" }
+      ]},
+      { id: "gye", name: "GYE", subtitle: "Travel Fund", category: "family", links: [
+        { label: "site", url: "https://omatty123.github.io/gye-travel-fund/", icon: "globe" }
+      ]},
+      { id: "meals", name: "Meals", subtitle: "Planner", category: "family", links: [
+        { label: "app", url: "https://family-meals-eight.vercel.app/plan/", icon: "globe" }
+      ]},
+      { id: "dunes", name: "Dunes", subtitle: "Book Site", category: "family", links: [
+        { label: "site", url: "https://omatty123.github.io/among-the-dunes/", icon: "globe" }
+      ]},
+      { id: "chuff", name: "Chuff", subtitle: "Loop", category: "family", links: [
+        { label: "site", url: "https://omatty123.github.io/chuff-loop-status/", icon: "globe" }
+      ]},
+      { id: "plastic-man", name: "Plastic Man", subtitle: "Modou Fall", category: "family", links: [
+        { label: "site", url: "https://plastic-man-site.vercel.app", icon: "globe" }
+      ]},
+      { id: "reading", name: "Reading", category: "reading", links: [] },
+      { id: "pere-goriot", name: "Père Goriot", subtitle: "Screenplay", category: "creative", links: [
+        { label: "pitch", url: "https://omatty123.github.io/pere-goriot-pitch/", icon: "globe" },
+        { label: "tools", url: "https://omatty123.github.io/pere-goriot-resources/", icon: "globe" }
+      ]}
     ];
 
     const icons = {
-      globe: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
-      folder: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`,
-      doc: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
-      github: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`
+      globe: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
+      folder: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`,
+      doc: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+      github: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`
     };
 
     const categoryLabels = {
-      teaching: "Teaching",
-      translation: "Translation",
-      family: "Family",
-      reading: "Reading",
-      creative: "Creative"
+      teaching: { name: "Teaching", emoji: "📚" },
+      translation: { name: "Translation", emoji: "🌏" },
+      family: { name: "Family", emoji: "🏠" },
+      reading: { name: "Reading", emoji: "📖" },
+      creative: { name: "Creative", emoji: "🎬" }
     };
 
     const categoryOrder = ["teaching", "translation", "family", "reading", "creative"];
 
+    const savedOrder = localStorage.getItem('life-dashboard-order');
+    if (savedOrder) {
+      const order = JSON.parse(savedOrder);
+      projects.sort((a, b) => {
+        const aIdx = order.indexOf(a.id), bIdx = order.indexOf(b.id);
+        return aIdx === -1 ? 1 : bIdx === -1 ? -1 : aIdx - bIdx;
+      });
+    }
+
     function render() {
       const container = document.getElementById("categories");
       const grouped = {};
-
-      projects.forEach(p => {
-        if (!grouped[p.category]) grouped[p.category] = [];
-        grouped[p.category].push(p);
-      });
+      projects.forEach(p => { if (!grouped[p.category]) grouped[p.category] = []; grouped[p.category].push(p); });
 
       categoryOrder.forEach(cat => {
         if (!grouped[cat]) return;
-
+        const info = categoryLabels[cat];
         const section = document.createElement("section");
         section.className = `category category-${cat}`;
-
         section.innerHTML = `
           <div class="category-header">
-            <span class="category-dot"></span>
-            <span class="category-name">${categoryLabels[cat]}</span>
+            <div class="category-icon">${info.emoji}</div>
+            <span class="category-name">${info.name}</span>
           </div>
           <div class="projects-grid">
             ${grouped[cat].map(p => `
@@ -400,91 +380,31 @@
                 <h3 class="project-title">${p.name}</h3>
                 ${p.subtitle ? `<p class="project-subtitle">${p.subtitle}</p>` : '<p class="project-subtitle">&nbsp;</p>'}
                 <div class="project-links">
-                  ${p.links.map(l => `
-                    <a href="${l.url}" target="_blank" rel="noopener" class="link">
-                      ${icons[l.icon] || icons.globe}
-                      ${l.label}
-                    </a>
-                  `).join('')}
+                  ${p.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="link">${icons[l.icon] || icons.globe} ${l.label}</a>`).join('')}
                 </div>
               </article>
             `).join('')}
-          </div>
-        `;
-
+          </div>`;
         container.appendChild(section);
-      });
-    }
-
-    // Load saved order from localStorage
-    const savedOrder = localStorage.getItem('life-dashboard-order');
-    if (savedOrder) {
-      const order = JSON.parse(savedOrder);
-      projects.sort((a, b) => {
-        const aIndex = order.indexOf(a.id);
-        const bIndex = order.indexOf(b.id);
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
       });
     }
 
     render();
 
-    // Drag and drop
     let draggedEl = null;
-    let draggedId = null;
-
-    document.addEventListener('dragstart', (e) => {
-      if (!e.target.classList.contains('project')) return;
-      draggedEl = e.target;
-      draggedId = e.target.dataset.id;
-      e.target.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-
-    document.addEventListener('dragend', (e) => {
-      if (!e.target.classList.contains('project')) return;
-      e.target.classList.remove('dragging');
-      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-      draggedEl = null;
-      draggedId = null;
-    });
-
-    document.addEventListener('dragover', (e) => {
+    document.addEventListener('dragstart', e => { if (!e.target.classList.contains('project')) return; draggedEl = e.target; e.target.classList.add('dragging'); });
+    document.addEventListener('dragend', e => { if (!e.target.classList.contains('project')) return; e.target.classList.remove('dragging'); document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over')); draggedEl = null; });
+    document.addEventListener('dragover', e => { e.preventDefault(); const t = e.target.closest('.project'); if (t && t !== draggedEl) t.classList.add('drag-over'); });
+    document.addEventListener('dragleave', e => { const t = e.target.closest('.project'); if (t) t.classList.remove('drag-over'); });
+    document.addEventListener('drop', e => {
       e.preventDefault();
       const target = e.target.closest('.project');
       if (!target || target === draggedEl) return;
-      target.classList.add('drag-over');
-    });
-
-    document.addEventListener('dragleave', (e) => {
-      const target = e.target.closest('.project');
-      if (target) target.classList.remove('drag-over');
-    });
-
-    document.addEventListener('drop', (e) => {
-      e.preventDefault();
-      const target = e.target.closest('.project');
-      if (!target || target === draggedEl) return;
-
       target.classList.remove('drag-over');
-
-      // DOM swap - just move the elements
       const parent = target.parentNode;
-      const draggedRect = draggedEl.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-
-      if (draggedRect.top < targetRect.top) {
-        parent.insertBefore(draggedEl, target.nextSibling);
-      } else {
-        parent.insertBefore(draggedEl, target);
-      }
-
-      // Update projects array order based on DOM
-      const allCards = document.querySelectorAll('.project');
-      const newOrder = Array.from(allCards).map(el => el.dataset.id);
-      localStorage.setItem('life-dashboard-order', JSON.stringify(newOrder));
+      if (draggedEl.getBoundingClientRect().top < target.getBoundingClientRect().top) parent.insertBefore(draggedEl, target.nextSibling);
+      else parent.insertBefore(draggedEl, target);
+      localStorage.setItem('life-dashboard-order', JSON.stringify(Array.from(document.querySelectorAll('.project')).map(el => el.dataset.id)));
     });
   </script>
 </body>
