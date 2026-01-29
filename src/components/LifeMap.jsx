@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import projectData from '../data/projects.js';
 
 const categoryToLine = {
   classes: 'teaching',
   translation: 'translation',
   family: 'family',
   reading: 'reading',
-  play: 'play'
+  play: 'play',
+  creative: 'creative'
 };
 
 const lineColors = {
@@ -13,7 +15,8 @@ const lineColors = {
   translation: '#8B5CF6',
   family: '#10B981',
   reading: '#EC4899',
-  play: '#F59E0B'
+  play: '#F59E0B',
+  creative: '#DC2626'
 };
 
 const icons = {
@@ -108,16 +111,7 @@ const getLinkIcon = (label) => {
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 const READING_FOLDER_ID = '1NFUcdxxApEFX--H2pb-DHcm4jxBMKIDO';
 
-const initialProjects = [
-  { id: "hist213", name: "HIST 213", subtitle: "East Asia", category: "classes", links: [{"label": "web", "url": "https://omatty123.github.io/hist213-dashboard/"}, {"label": "drive", "url": "https://drive.google.com"}] },
-  { id: "chja370", name: "CHJA 370", category: "classes", links: [{"label": "doc", "url": "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0"}] },
-  { id: "montafon", name: "Montafon", subtitle: "Moonlight", category: "translation", links: [{"label": "repo", "url": "https://github.com/omatty123/MontafonMoonlight"}] },
-  { id: "buddhist", name: "Buddhist", subtitle: "Travel", category: "translation", links: [{"label": "drive", "url": "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL"}] },
-  { id: "bld-hub", name: "BLD", subtitle: "Hub", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/banglangdang-hub/"}] },
-  { id: "dunes", name: "Dunes", subtitle: "Book Site", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/among-the-dunes/"}] },
-  { id: "chuff", name: "Chuff", subtitle: "Loop", category: "family", links: [{"label": "site", "url": "https://omatty123.github.io/chuff-loop-status/"}] },
-  { id: "reading", name: "Reading", category: "reading", links: [{"label": "firebase", "url": "https://console.firebase.google.com/u/0/project/media-dashboard-bf3e9/settings/general/web:N2U0ODRiZTYtOTE5OS00MGJhLTg0OWItNDQ3OThkYmZjODg3?nonce=1769293607565"}] }
-];
+const initialProjects = projectData.projects;
 
 function AddLinkModal({ project, color, onClose, onAdd }) {
   const [label, setLabel] = useState('');

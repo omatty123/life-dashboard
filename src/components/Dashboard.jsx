@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import initialData from '../data/projects.json'
+import initialData from '../data/projects.js'
 
 const categoryConfig = {
   classes: { label: 'TEACHING', color: '#3B82F6' },

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import projectData from '../data/projects.json';
+import projectData from '../data/projects.js';
 
 export default function MetroMap() {
   const svgRef = useRef(null);
