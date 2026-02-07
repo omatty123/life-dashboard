@@ -265,6 +265,89 @@
     .category:nth-child(4) { animation-delay: 0.2s; }
     .category:nth-child(5) { animation-delay: 0.25s; }
 
+    /* ---- Coming Up Strip ---- */
+
+    .coming-up {
+      max-width: 700px;
+      margin: 0 auto 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .coming-up::-webkit-scrollbar { display: none; }
+
+    .coming-up__label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      background: rgba(255,255,255,0.7);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .milestone {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(212, 196, 168, 0.85);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(160, 82, 45, 0.2);
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      animation: fadeIn 0.3s ease forwards;
+      opacity: 0;
+    }
+
+    .milestone:nth-child(2) { animation-delay: 0.08s; }
+    .milestone:nth-child(3) { animation-delay: 0.14s; }
+    .milestone:nth-child(4) { animation-delay: 0.2s; }
+    .milestone:nth-child(5) { animation-delay: 0.26s; }
+
+    .milestone__date {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--wood);
+    }
+
+    .milestone__name {
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .milestone__countdown {
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: white;
+      background: var(--grass-dark);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      letter-spacing: 0.02em;
+    }
+
+    .milestone__countdown--urgent {
+      background: #c0392b;
+    }
+
+    .milestone__countdown--soon {
+      background: #e67e22;
+    }
+
+    .milestone__countdown--past {
+      background: var(--text-light);
+      opacity: 0.6;
+    }
+
     @media (max-width: 600px) {
       .categories { grid-template-columns: 1fr; }
       body { overflow: auto; }
@@ -283,10 +366,67 @@
     <header>
       <h1>Life Dashboard</h1>
     </header>
+    <div class="coming-up" id="comingUp"></div>
     <div class="categories" id="categories"></div>
   </div>
 
   <script>
+    // ---- Coming Up: edit this array to add/remove milestones ----
+    const milestones = [
+      { date: "2026-03-02", name: "Neenah deliverables to Pete" },
+      { date: "2026-03-13", name: "Winter term ends" },
+      { date: "2026-03-16", name: "Neenah Club talk" },
+    ];
+
+    function renderMilestones() {
+      const container = document.getElementById('comingUp');
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+
+      // Filter: show past 3 days through future, sorted by date
+      const upcoming = milestones
+        .map(m => {
+          const d = new Date(m.date + 'T00:00:00');
+          const diff = Math.round((d - now) / 86400000);
+          return { ...m, dateObj: d, days: diff };
+        })
+        .filter(m => m.days >= -3)
+        .sort((a, b) => a.days - b.days);
+
+      if (!upcoming.length) { container.style.display = 'none'; return; }
+
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+      container.innerHTML = `<span class="coming-up__label">Coming Up</span>` +
+        upcoming.map(m => {
+          const dateStr = `${months[m.dateObj.getMonth()]} ${m.dateObj.getDate()}`;
+          let countdownClass = '';
+          let countdownText = '';
+          if (m.days < 0) {
+            countdownClass = 'milestone__countdown--past';
+            countdownText = `${Math.abs(m.days)}d ago`;
+          } else if (m.days === 0) {
+            countdownClass = 'milestone__countdown--urgent';
+            countdownText = 'TODAY';
+          } else if (m.days <= 3) {
+            countdownClass = 'milestone__countdown--urgent';
+            countdownText = `${m.days}d`;
+          } else if (m.days <= 7) {
+            countdownClass = 'milestone__countdown--soon';
+            countdownText = `${m.days}d`;
+          } else {
+            countdownText = `${m.days}d`;
+          }
+          return `<div class="milestone">
+            <span class="milestone__date">${dateStr}</span>
+            <span class="milestone__name">${m.name}</span>
+            <span class="milestone__countdown ${countdownClass}">${countdownText}</span>
+          </div>`;
+        }).join('');
+    }
+
+    renderMilestones();
+
     const projects = [
       { id: "hist213", name: "HIST 213", subtitle: "East Asia", category: "teaching", links: [
         { label: "web", url: "https://omatty123.github.io/hist213-dashboard/", icon: "globe" },
