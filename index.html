@@ -306,6 +306,14 @@
       flex-shrink: 0;
       animation: fadeIn 0.3s ease forwards;
       opacity: 0;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    a.milestone:hover {
+      border-color: var(--wood);
+      background: rgba(212, 196, 168, 1);
     }
 
     .milestone:nth-child(2) { animation-delay: 0.08s; }
@@ -373,9 +381,9 @@
   <script>
     // ---- Coming Up: edit this array to add/remove milestones ----
     const milestones = [
-      { date: "2026-03-02", name: "Neenah deliverables to Pete" },
+      { date: "2026-03-02", name: "Neenah deliverables to Pete", url: "https://omatty123.github.io/neenah-korea/" },
       { date: "2026-03-13", name: "Winter term ends" },
-      { date: "2026-03-16", name: "Neenah Club talk" },
+      { date: "2026-03-16", name: "Neenah Club talk", url: "https://omatty123.github.io/neenah-korea/" },
     ];
 
     function renderMilestones() {
@@ -417,11 +425,13 @@
           } else {
             countdownText = `${m.days}d`;
           }
-          return `<div class="milestone">
+          const tag = m.url ? 'a' : 'div';
+          const href = m.url ? ` href="${m.url}" target="_blank" rel="noopener"` : '';
+          return `<${tag} class="milestone"${href}>
             <span class="milestone__date">${dateStr}</span>
             <span class="milestone__name">${m.name}</span>
             <span class="milestone__countdown ${countdownClass}">${countdownText}</span>
-          </div>`;
+          </${tag}>`;
         }).join('');
     }
 
