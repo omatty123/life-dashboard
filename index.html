@@ -277,6 +277,19 @@
       color: white;
     }
 
+    .link--status {
+      cursor: default;
+      color: #6b5138;
+      background: #f6efe5;
+      border-color: #e4d2ba;
+    }
+
+    .link--status:hover {
+      color: #6b5138;
+      background: #f6efe5;
+      border-color: #e4d2ba;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -483,6 +496,16 @@
         { label: "site", url: "https://omatty123.github.io/Modern-Korea-through-Lit-and-Film/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/Modern-Korea-through-Lit-and-Film", icon: "github" }
       ]},
+      { id: "teaching-fall-2026", name: "Fall 2026", subtitle: "Teaching HQ", category: "teaching", links: [
+        { label: "site", url: "https://omatty123.github.io/teaching-fall-2026/", icon: "globe" },
+        { label: "repo", url: "https://github.com/omatty123/teaching-fall-2026", icon: "github" }
+      ]},
+      { id: "teaching-fall-2026-roster", name: "Fall Roster", subtitle: "Access-gated", category: "teaching", links: [
+        { label: "private" }
+      ]},
+      { id: "fall-2026-workspace", name: "Fall Workspace", subtitle: "Course Materials", category: "teaching", links: [
+        { label: "private" }
+      ]},
       { id: "montafon", name: "Montafon", subtitle: "Moonlight", category: "translation", links: [
         { label: "site", url: "https://omatty123.github.io/MontafonMoonlight/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/MontafonMoonlight", icon: "github" }
@@ -525,6 +548,18 @@
       { id: "pirogue", name: "Pirogue", subtitle: "Dominica Chang", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/pirogue-site/", icon: "globe" }
       ]},
+      { id: "banglangdang-reunion-2026", name: "BLD Reunion", subtitle: "2026", category: "family", links: [
+        { label: "private" }
+      ]},
+      { id: "downstairs", name: "Downstairs", subtitle: "Floor Project", category: "family", links: [
+        { label: "site", url: "https://downstairs-floor-project.tengri-1972.chatgpt.site", icon: "globe" }
+      ]},
+      { id: "outside-shared-songlist", name: "Good Time Charlie's", subtitle: "Jukebox", category: "family", links: [
+        { label: "site", url: "https://good-time-charlies-jukebox.tengri-1972.chatgpt.site", icon: "globe" }
+      ]},
+      { id: "cabin-dashboard", name: "The Cabin", subtitle: "Northwoods Journal", category: "family", links: [
+        { label: "site", url: "https://northwoods-cabin-journal.tengri-1972.chatgpt.site", icon: "globe" }
+      ]},
       { id: "reading", name: "Reading", category: "reading", links: [
         { label: "app", url: "https://reading-app-one.vercel.app", icon: "link" },
         { label: "drive", url: "https://drive.google.com/drive/u/0/folders/1NFUcdxxApEFX--H2pb-DHcm4jxBMKIDO", icon: "folder" }
@@ -544,6 +579,9 @@
       ]},
       { id: "pro-translation", name: "Translator", subtitle: "BIO", category: "translation", links: [
         { label: "site", url: "https://banglangdang.vercel.app/", icon: "globe" }
+      ]},
+      { id: "dunes-translator", name: "Dunes Translator", subtitle: "Private Machine", category: "translation", links: [
+        { label: "private" }
       ]},
       { id: "jake-frederick", name: "Jake Frederick", subtitle: "Portfolio", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/professor-jake-frederick/", icon: "globe" }
@@ -565,6 +603,12 @@
       { id: "lin-desk", name: "Lin's Desk", subtitle: "晨报 Scorecard", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/lin-desk/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/lin-desk", icon: "github" }
+      ]},
+      { id: "fox-valley-tornado-report", name: "Fox River", subtitle: "Tornado Atlas", category: "misc", links: [
+        { label: "atlas", url: "https://fox-river-tornado-atlas.tengri-1972.chatgpt.site", icon: "globe" }
+      ]},
+      { id: "meta", name: "META", subtitle: "System Workspace", category: "misc", links: [
+        { label: "local" }
       ]}
     ];
 
@@ -584,7 +628,10 @@
       const order = JSON.parse(savedOrder);
       projects.sort((a, b) => {
         const aIdx = order.indexOf(a.id), bIdx = order.indexOf(b.id);
-        return aIdx === -1 ? 1 : bIdx === -1 ? -1 : aIdx - bIdx;
+        if (aIdx === -1 && bIdx === -1) return 0;
+        if (aIdx === -1) return 1;
+        if (bIdx === -1) return -1;
+        return aIdx - bIdx;
       });
     }
 
@@ -619,7 +666,10 @@
                   <div class="project-title">${p.name}${p.subtitle ? ` <span class="project-subtitle">${p.subtitle}</span>` : ''}</div>
                 </div>
                 <div class="project-links">
-                  ${p.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="link">${l.label}</a>`).join('')}
+                  ${p.links.map(l => l.url
+                    ? `<a href="${l.url}" target="_blank" rel="noopener" class="link">${l.label}</a>`
+                    : `<span class="link link--status" aria-label="${l.label} project">${l.label}</span>`
+                  ).join('')}
                 </div>
               </article>
             `).join('')}

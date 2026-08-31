@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "githubOwner": "omatty123",
+  "baselineAt": "2026-06-20T19:44:17Z",
+  "codexBaselineAt": "2026-07-23T11:05:09.901Z",
+  "codexStatePath": "~/.codex/.codex-global-state.json",
+  "ignoredCodexProjectLabels": [
+    "wegehaum",
+    "workspaces",
+    "New project",
+    "codex_scaffold"
+  ],
+  "ignoredCandidateIds": [
+    "github:omatty123/life-dashboard"
+  ]
+}
