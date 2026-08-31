@@ -16,7 +16,7 @@ const boardProjects = parseBoardProjects(
 );
 
 test("parses the current board project registry", () => {
-  assert.equal(boardProjects.length, 40);
+  assert.equal(boardProjects.length, 41);
   const signals = collectBoardSignals(boardProjects);
   assert(signals.repos.has("omatty123/lin-desk"));
   assert(signals.ids.has("no-time-left"));
@@ -24,6 +24,7 @@ test("parses the current board project registry", () => {
   assert(signals.ids.has("cabin-dashboard"));
   assert(signals.ids.has("dunes-translator"));
   assert(signals.ids.has("korea-2026"));
+  assert(signals.ids.has("paris-2026"));
 });
 
 test("reports a genuinely new repository but not an existing card", () => {
