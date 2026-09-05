@@ -40,4 +40,6 @@ private watcher that notices projects which may need a card.
 ## Public changes
 
 Preserve the dashboard's compact launcher design and browser-local drag order.
+Keep its cute, cartoony identity: bright blue sky, green grass, white panels,
+puffy clouds, and a sunny yellow sun. Layout improvements should retain that palette.
 Test links and layout before publishing. Do not deploy or push unrelated work.
