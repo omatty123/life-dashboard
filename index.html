@@ -19,402 +19,38 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --grass-light: #90c95a;
-      --grass: #6db33f;
-      --grass-dark: #4a8c2a;
-      --sky: #87ceeb;
-      --sky-light: #b5e3f5;
-      --path: #d4c4a8;
-      --wood: #a0522d;
-      --text: #2d4a1c;
-      --text-light: #4a6b2d;
-      --white: #fff;
-      --shadow: rgba(45, 74, 28, 0.15);
-    }
-
-    body {
-      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(180deg, var(--sky-light) 0%, var(--sky) 25%, var(--grass-light) 25%, var(--grass) 100%);
-      color: var(--text);
-    }
-
-    .clouds {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 30vh;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .cloud {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.9;
-      animation: float 60s linear infinite;
-    }
-
-    .cloud::before, .cloud::after {
-      content: '';
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-    }
-
-    .cloud-1 { width: 60px; height: 24px; top: 8%; left: -60px; animation-duration: 45s; }
-    .cloud-1::before { width: 30px; height: 30px; top: -15px; left: 10px; }
-    .cloud-1::after { width: 36px; height: 36px; top: -18px; left: 28px; }
-
-    .cloud-2 { width: 70px; height: 28px; top: 4%; left: -70px; animation-duration: 55s; animation-delay: -20s; }
-    .cloud-2::before { width: 35px; height: 35px; top: -17px; left: 12px; }
-    .cloud-2::after { width: 40px; height: 40px; top: -20px; left: 32px; }
-
-    .cloud-3 { width: 50px; height: 20px; top: 12%; left: -50px; animation-duration: 50s; animation-delay: -35s; }
-    .cloud-3::before { width: 25px; height: 25px; top: -12px; left: 6px; }
-    .cloud-3::after { width: 30px; height: 30px; top: -15px; left: 22px; }
-
-    @keyframes float {
-      from { transform: translateX(0); }
-      to { transform: translateX(calc(100vw + 200px)); }
-    }
-
-    .sun {
-      position: fixed;
-      top: 3%;
-      right: 5%;
-      width: 40px;
-      height: 40px;
-      background: #ffd700;
-      border-radius: 50%;
-      box-shadow: 0 0 30px #ffd700, 0 0 50px rgba(255, 215, 0, 0.4);
-      z-index: 0;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      padding: 1rem 2rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 0.75rem;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--white);
-      text-shadow: 1px 1px 0 var(--grass-dark), 0 2px 10px rgba(0,0,0,0.15);
-      letter-spacing: -0.01em;
-    }
-
-    .tagline {
-      font-size: 0.75rem;
-      color: var(--white);
-      text-shadow: 1px 1px 2px var(--grass-dark);
-      margin-top: 0.25rem;
-      font-weight: 500;
-    }
-
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(2, max-content);
-      justify-content: center;
-      align-items: flex-start;
-      column-gap: 0.5rem;
-      row-gap: 0.75rem;
-      max-width: 920px;
-      margin: 0 auto;
-    }
-
-    .category-column {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      align-items: flex-start;
-    }
-
-    .category {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 0.75rem;
-      box-shadow: 0 4px 16px var(--shadow);
-      border: 2px solid rgba(255,255,255,0.6);
-      height: fit-content;
-      justify-self: start;
-      width: var(--category-width, fit-content);
-      max-width: 100%;
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .category-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.8rem;
-    }
-
-    .category-teaching .category-icon { background: linear-gradient(135deg, #4a90d9, #357abd); }
-    .category-translation .category-icon { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-    .category-family .category-icon { background: linear-gradient(135deg, #27ae60, #1e8449); }
-    .category-reading .category-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-    .category-creative .category-icon { background: linear-gradient(135deg, #f39c12, #d68910); }
-    .category-misc .category-icon { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
-
-    .category-name {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .projects-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      align-items: flex-start;
-    }
-
-    .project {
-      background: white;
-      border-radius: 6px;
-      padding: 0.35rem 0.5rem;
-      cursor: grab;
-      transition: all 0.15s ease;
-      border: 1px solid #e0e8d8;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-      align-self: flex-start;
-      width: var(--project-width, fit-content);
-      max-width: 100%;
-    }
-
-    .project:hover {
-      background: #f8fdf5;
-      border-color: var(--grass-light);
-    }
-
-    .project.dragging { opacity: 0.5; cursor: grabbing; }
-    .project.drag-over { border-color: var(--grass); background: #f0f8e8; }
-
-    .project-info { flex: 0 1 auto; min-width: 0; }
-
-    .project-title {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.2;
-    }
-
-    .project-subtitle {
-      font-size: 0.65rem;
-      color: var(--text-light);
-      font-weight: 400;
-    }
-
-    .project-links {
-      display: flex;
-      gap: 0.2rem;
-      flex-shrink: 0;
-      flex-wrap: wrap;
-    }
-
-    .project--stacked-links .project-info {
-      width: 100%;
-    }
-
-    .project--stacked-links .project-links {
-      flex-basis: 100%;
-      width: 100%;
-      margin-top: 0.1rem;
-    }
-
-    .link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      padding: 0.15rem 0.4rem;
-      font-size: 0.6rem;
-      font-weight: 500;
-      color: var(--text);
-      background: #f0f8e8;
-      border: 1px solid #d4e8c4;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: all 0.15s ease;
-    }
-
-    .link:hover {
-      background: var(--grass);
-      border-color: var(--grass);
-      color: white;
-    }
-
-    .link--status {
-      cursor: default;
-      color: #6b5138;
-      background: #f6efe5;
-      border-color: #e4d2ba;
-    }
-
-    .link--status:hover {
-      color: #6b5138;
-      background: #f6efe5;
-      border-color: #e4d2ba;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .category {
-      animation: fadeIn 0.3s ease forwards;
-      opacity: 0;
-    }
-
-    /* ---- Coming Up Strip ---- */
-
-    .coming-up {
-      max-width: 700px;
-      margin: 0 auto 0.75rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem;
-      overflow: visible;
-    }
-
-    .coming-up__label {
-      font-size: 0.6rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text);
-      background: rgba(255,255,255,0.7);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      align-self: center;
-    }
-
-    .milestone {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: rgba(212, 196, 168, 0.85);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(160, 82, 45, 0.2);
-      border-radius: 6px;
-      padding: 0.3rem 0.6rem;
-      white-space: nowrap;
-      animation: fadeIn 0.3s ease forwards;
-      opacity: 0;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s ease, background 0.15s ease;
-    }
-
-    a.milestone:hover {
-      border-color: var(--wood);
-      background: rgba(212, 196, 168, 1);
-    }
-
-    .milestone:nth-child(2) { animation-delay: 0.08s; }
-    .milestone:nth-child(3) { animation-delay: 0.14s; }
-    .milestone:nth-child(4) { animation-delay: 0.2s; }
-    .milestone:nth-child(5) { animation-delay: 0.26s; }
-
-    .milestone__date {
-      font-size: 0.6rem;
-      font-weight: 600;
-      color: var(--wood);
-    }
-
-    .milestone__name {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    .milestone__countdown {
-      font-size: 0.55rem;
-      font-weight: 600;
-      color: white;
-      background: var(--grass-dark);
-      padding: 0.1rem 0.35rem;
-      border-radius: 3px;
-      letter-spacing: 0.02em;
-    }
-
-    .milestone__countdown--urgent {
-      background: #c0392b;
-    }
-
-    .milestone__countdown--soon {
-      background: #e67e22;
-    }
-
-    .milestone__countdown--past {
-      background: var(--text-light);
-      opacity: 0.6;
-    }
-
-    @media (max-width: 600px) {
-      .categories {
-        grid-template-columns: 1fr;
-      }
-      .category {
-        width: 100%;
-        max-width: 100%;
-      }
-      body { overflow: auto; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="sun"></div>
-  <div class="clouds">
+  <div class="sun" aria-hidden="true"></div>
+  <div class="clouds" aria-hidden="true">
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
     <div class="cloud cloud-3"></div>
   </div>
 
-  <div class="container">
+  <main class="container" id="main">
     <header>
-      <h1>Life Dashboard</h1>
+      <div class="header-title">
+        <h1>Life Dashboard<span class="title-dot" aria-hidden="true">.</span></h1>
+        <p class="tagline">Teaching, translation, family &amp; everything in between.</p>
+      </div>
+      <time id="today" class="today"></time>
     </header>
+    <div class="toolbar">
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <label class="sr-only" for="projectSearch">Find a project</label>
+        <input type="search" id="projectSearch" placeholder="Find a project…" autocomplete="off" aria-controls="categories">
+      </div>
+      <span class="project-count" id="projectCount" role="status" aria-live="polite"></span>
+    </div>
     <div class="coming-up" id="comingUp"></div>
     <div class="categories" id="categories"></div>
-  </div>
+    <p class="empty-state" id="emptyState" hidden>No projects found. Try another name or category.</p>
+    <footer>Make yourself at home. <span>Drag projects to reorder within a category, or focus a row and use Alt + ↑ / ↓.</span></footer>
+    <p class="sr-only" id="orderStatus" role="status" aria-live="polite"></p>
+  </main>
 
   <script>
     // ---- Coming Up: edit this array to add/remove milestones ----
@@ -626,58 +262,64 @@
 
     const categoryOrder = ["teaching", "translation", "family", "reading", "creative", "misc"];
 
-    const savedOrder = localStorage.getItem('life-dashboard-order');
-    if (savedOrder) {
-      const order = JSON.parse(savedOrder);
-      projects.sort((a, b) => {
-        const aIdx = order.indexOf(a.id), bIdx = order.indexOf(b.id);
-        if (aIdx === -1 && bIdx === -1) return 0;
-        if (aIdx === -1) return 1;
-        if (bIdx === -1) return -1;
-        return aIdx - bIdx;
-      });
-    }
+    // An unavailable or malformed browser preference must not hide the launcher.
+    try {
+      const order = JSON.parse(localStorage.getItem('life-dashboard-order') || '[]');
+      if (Array.isArray(order)) {
+        projects.sort((a, b) => {
+          const aIdx = order.indexOf(a.id), bIdx = order.indexOf(b.id);
+          return (aIdx < 0 ? Infinity : aIdx) - (bIdx < 0 ? Infinity : bIdx) || 0;
+        });
+      }
+    } catch { /* Keep the default project order. */ }
+
+    const today = new Date();
+    document.getElementById('today').dateTime = today.toLocaleDateString('en-CA');
+    document.getElementById('today').textContent = today.toLocaleDateString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric'
+    });
+    const search = document.getElementById('projectSearch');
+    const columnCount = () => window.matchMedia('(min-width: 1100px)').matches ? 3
+      : window.matchMedia('(min-width: 720px)').matches ? 2 : 1;
+    let renderedColumns = columnCount();
 
     function render() {
       const container = document.getElementById("categories");
-      container.innerHTML = `
-        <div class="category-column" data-col="0"></div>
-        <div class="category-column" data-col="1"></div>
-      `;
+      container.innerHTML = Array.from({ length: renderedColumns }, (_, i) =>
+        `<div class="category-column" data-col="${i}"></div>`).join('');
       const columns = Array.from(container.querySelectorAll('.category-column'));
       const grouped = {};
       projects.forEach(p => { if (!grouped[p.category]) grouped[p.category] = []; grouped[p.category].push(p); });
-      const columnWeights = [0, 0];
-      let animationIndex = 1;
+      const columnWeights = Array(renderedColumns).fill(0);
 
       categoryOrder.forEach(cat => {
         if (!grouped[cat]) return;
         const info = categoryLabels[cat];
         const section = document.createElement("section");
         section.className = `category category-${cat}`;
-        section.style.animationDelay = `${animationIndex * 0.05}s`;
-        animationIndex += 1;
+        section.setAttribute('aria-labelledby', `heading-${cat}`);
         section.innerHTML = `
           <div class="category-header">
-            <div class="category-icon">${info.emoji}</div>
-            <span class="category-name">${info.name}</span>
+            <div class="category-icon" aria-hidden="true">${info.emoji}</div>
+            <h2 class="category-name" id="heading-${cat}">${info.name}</h2>
+            <span class="category-count">${grouped[cat].length}</span>
           </div>
           <div class="projects-grid">
             ${grouped[cat].map(p => `
-              <article class="project${p.links.length >= 2 ? ' project--stacked-links' : ''}" draggable="true" data-id="${p.id}">
+              <article class="project" draggable="true" tabindex="0" aria-label="${p.name}${p.subtitle ? ` ${p.subtitle}` : ''}" data-id="${p.id}">
                 <div class="project-info">
                   <div class="project-title">${p.name}${p.subtitle ? ` <span class="project-subtitle">${p.subtitle}</span>` : ''}</div>
                 </div>
                 <div class="project-links">
                   ${p.links.map(l => l.url
-                    ? `<a href="${l.url}" target="_blank" rel="noopener" class="link">${l.label}</a>`
+                    ? `<a href="${l.url}" target="_blank" rel="noopener" class="link" aria-label="${p.name}${p.subtitle ? ` ${p.subtitle}` : ''} — ${l.label} (opens in a new tab)">${l.label}</a>`
                     : `<span class="link link--status" aria-label="${l.label} project">${l.label}</span>`
                   ).join('')}
                 </div>
               </article>
             `).join('')}
           </div>`;
-        const targetColumn = columnWeights[0] <= columnWeights[1] ? 0 : 1;
+        const targetColumn = columnWeights.indexOf(Math.min(...columnWeights));
         columns[targetColumn].appendChild(section);
         columnWeights[targetColumn] += grouped[cat].length + 1;
       });
@@ -685,47 +327,92 @@
 
     render();
 
-    function normalizeLayoutWidths() {
-      const rootStyle = document.documentElement.style;
-      rootStyle.removeProperty('--project-width');
-      rootStyle.removeProperty('--category-width');
-      const projectWidthCap = 170;
-      const categoryWidthCap = 250;
+    function filterProjects() {
+      const query = search.value.trim().toLocaleLowerCase();
+      let count = 0;
+      document.querySelectorAll('.project').forEach(el => {
+        const project = projects.find(p => p.id === el.dataset.id);
+        const text = `${project.name} ${project.subtitle || ''} ${categoryLabels[project.category].name}`;
+        el.hidden = !text.toLocaleLowerCase().includes(query);
+        if (!el.hidden) count++;
+      });
+      document.querySelectorAll('.category').forEach(section => {
+        const visible = section.querySelectorAll('.project:not([hidden])').length;
+        section.hidden = visible === 0;
+        section.querySelector('.category-count').textContent = visible;
+      });
+      document.querySelectorAll('.category-column').forEach(column => {
+        column.hidden = !column.querySelector('.category:not([hidden])');
+      });
+      document.getElementById('projectCount').textContent = query
+        ? `${count} of ${projects.length} projects` : `${projects.length} projects · ${categoryOrder.length} categories`;
+      document.getElementById('emptyState').hidden = count !== 0;
+    }
+    search.addEventListener('input', filterProjects);
+    search.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { search.value = ''; filterProjects(); }
+    });
+    filterProjects();
 
-      const projectEls = Array.from(document.querySelectorAll('.project'));
-      if (projectEls.length) {
-        const measuredProjectWidth = Math.max(...projectEls.map(el => Math.ceil(el.getBoundingClientRect().width)));
-        const maxProjectWidth = Math.min(measuredProjectWidth, projectWidthCap);
-        rootStyle.setProperty('--project-width', `${maxProjectWidth}px`);
-      }
-
-      const categoryEls = Array.from(document.querySelectorAll('.category'));
-      if (categoryEls.length) {
-        const measuredCategoryWidth = Math.max(...categoryEls.map(el => Math.ceil(el.getBoundingClientRect().width)));
-        const maxCategoryWidth = Math.min(measuredCategoryWidth, categoryWidthCap);
-        rootStyle.setProperty('--category-width', `${maxCategoryWidth}px`);
+    function saveOrder() {
+      const order = Array.from(document.querySelectorAll('.project')).map(el => el.dataset.id);
+      projects.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+      try {
+        localStorage.setItem('life-dashboard-order', JSON.stringify(order));
+      } catch {
+        document.getElementById('orderStatus').textContent = 'Order changed for this visit. Browser storage is unavailable.';
       }
     }
-
-    normalizeLayoutWidths();
-    window.addEventListener('load', normalizeLayoutWidths);
-    window.addEventListener('resize', normalizeLayoutWidths);
+    window.addEventListener('resize', () => {
+      const next = columnCount();
+      if (next === renderedColumns) return;
+      renderedColumns = next;
+      render();
+      filterProjects();
+    });
 
     let draggedEl = null;
-    document.addEventListener('dragstart', e => { if (!e.target.classList.contains('project')) return; draggedEl = e.target; e.target.classList.add('dragging'); });
-    document.addEventListener('dragend', e => { if (!e.target.classList.contains('project')) return; e.target.classList.remove('dragging'); document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over')); draggedEl = null; });
-    document.addEventListener('dragover', e => { e.preventDefault(); const t = e.target.closest('.project'); if (t && t !== draggedEl) t.classList.add('drag-over'); });
-    document.addEventListener('dragleave', e => { const t = e.target.closest('.project'); if (t) t.classList.remove('drag-over'); });
-    document.addEventListener('drop', e => {
-      e.preventDefault();
+    document.addEventListener('dragstart', e => {
+      if (!e.target.classList.contains('project')) return;
+      draggedEl = e.target;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', draggedEl.dataset.id);
+      draggedEl.classList.add('dragging');
+    });
+    document.addEventListener('dragend', () => {
+      draggedEl?.classList.remove('dragging');
+      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      draggedEl = null;
+    });
+    document.addEventListener('dragover', e => {
       const target = e.target.closest('.project');
-      if (!target || target === draggedEl) return;
+      if (draggedEl && target && target !== draggedEl && target.parentNode === draggedEl.parentNode) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        target.classList.add('drag-over');
+      }
+    });
+    document.addEventListener('dragleave', e => e.target.closest('.project')?.classList.remove('drag-over'));
+    document.addEventListener('drop', e => {
+      const target = e.target.closest('.project');
+      if (!draggedEl || !target || target === draggedEl || target.parentNode !== draggedEl.parentNode) return;
+      e.preventDefault();
       target.classList.remove('drag-over');
       const parent = target.parentNode;
       if (draggedEl.getBoundingClientRect().top < target.getBoundingClientRect().top) parent.insertBefore(draggedEl, target.nextSibling);
       else parent.insertBefore(draggedEl, target);
-      normalizeLayoutWidths();
-      localStorage.setItem('life-dashboard-order', JSON.stringify(Array.from(document.querySelectorAll('.project')).map(el => el.dataset.id)));
+      saveOrder();
+    });
+    document.addEventListener('keydown', e => {
+      if (!e.altKey || !['ArrowUp', 'ArrowDown'].includes(e.key) || !e.target.classList.contains('project')) return;
+      const row = e.target;
+      const siblings = Array.from(row.parentNode.querySelectorAll('.project:not([hidden])'));
+      const target = siblings[siblings.indexOf(row) + (e.key === 'ArrowUp' ? -1 : 1)];
+      e.preventDefault();
+      if (!target) return;
+      row.parentNode.insertBefore(row, e.key === 'ArrowUp' ? target : target.nextSibling);
+      row.focus();
+      saveOrder();
     });
   </script>
 </body>
