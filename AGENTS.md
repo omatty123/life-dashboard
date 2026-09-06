@@ -43,3 +43,10 @@ Preserve the dashboard's compact launcher design and browser-local drag order.
 Keep its cute, cartoony identity: bright blue sky, green grass, white panels,
 puffy clouds, and a sunny yellow sun. Layout improvements should retain that palette.
 Test links and layout before publishing. Do not deploy or push unrelated work.
+
+## Confirmed layout preference (September 6, 2026)
+
+Matty rejected the stricter eight-category redesign and its aligned grid rows.
+Prefer the original smooth, balanced columns and compact link rows, even when
+that means looser categories. Do not add navigation clutter or split the board
+into more disconnected boxes. Keep private-link setup unobtrusive below the board.
