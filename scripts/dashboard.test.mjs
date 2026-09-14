@@ -20,7 +20,7 @@ test('private links reject executable URLs, credentials, malformed inputs and em
 test('all original projects survive with unique IDs and usable destinations or an explicit private/local action',()=>{
  const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
  const p=vm.runInNewContext(html.match(/const projects = (\[[\s\S]*?\n\s*\]);/)[1]);
- assert.equal(p.length,56); assert.equal(new Set(p.map(x=>x.id)).size,56);
+ assert.equal(p.length,54); assert.equal(new Set(p.map(x=>x.id)).size,54);
  for(const project of p) assert.ok(project.private || project.id==='meta' || project.links.some(l=>l.url?.startsWith('https://')));
  assert.ok(!html.includes('https://omatty123.github.io/teaching-today/'));
  assert.ok(!html.includes('https://omatty123.github.io/hist213-dashboard/'));

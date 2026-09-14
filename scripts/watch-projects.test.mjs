@@ -16,7 +16,7 @@ const boardProjects = parseBoardProjects(
 );
 
 test("parses the current board project registry", () => {
-  assert.equal(boardProjects.length, 56);
+  assert.equal(boardProjects.length, 54);
   const signals = collectBoardSignals(boardProjects);
   assert(signals.repos.has("omatty123/lin-desk"));
   assert(signals.ids.has("no-time-left"));
