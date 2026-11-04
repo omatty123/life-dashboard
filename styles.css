@@ -130,3 +130,8 @@ footer span { margin-left: 6px; }
 .private-connect { font-family: inherit; cursor: pointer; }
 #privateStatus { margin: 10px 0 0; }
 #privateStatus:empty { display: none; }
+.treasure { margin-top: 20px; background: #fffffff2; border-radius: 14px; padding: 0 16px; box-shadow: 0 5px 20px #2d4a1c26; --accent: #7a5c2e; }
+.treasure > summary { display: flex; align-items: center; gap: 9px; padding: 14px 0; cursor: pointer; font-size: 14px; font-weight: 600; }
+.treasure[open] { padding-bottom: 8px; }
+.treasure .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); column-gap: 24px; }
+.treasure .project:last-child { border-bottom: 1px solid var(--line); }

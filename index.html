@@ -47,6 +47,10 @@
     </div>
     <div class="coming-up" id="comingUp"></div>
     <div class="categories" id="categories"></div>
+    <details class="treasure" id="treasure">
+      <summary><span aria-hidden="true">🧰</span> Treasure Chest <span class="category-count" id="treasureCount"></span></summary>
+      <div class="projects-grid" id="treasureGrid"></div>
+    </details>
     <p class="empty-state" id="emptyState" hidden>No projects found. Try another name or category.</p>
     <footer>Make yourself at home. <span>Drag projects to reorder within a category, or focus a row and use Alt + ↑ / ↓.</span></footer>
     <details class="private-settings" id="privateSettings">
@@ -126,19 +130,19 @@
       { id: "hist213", private: true, name: "HIST 213", subtitle: "East Asia", category: "teaching", links: [
         { label: "private" }
       ]},
-      { id: "chja370", name: "EAST 370", category: "teaching", links: [
+      { id: "chja370", archived: true, name: "EAST 370", category: "teaching", links: [
         { label: "web", url: "https://omatty123.github.io/east370-site/", icon: "globe" },
         { label: "doc", url: "https://docs.google.com/document/d/10NoIMoM1vxWNxxIJIPYsjhF1QkpYeOI6qBvjbk0CW9k/edit?tab=t.0", icon: "doc" },
         { label: "syllabus", url: "https://docs.google.com/document/d/1pe6TGFP7j74LkN62yXIgCsXP8-mQsPtPg4SqCZvGILo/edit?tab=t.0", icon: "doc" }
       ]},
-      { id: "teaching-today", private: true, name: "Teaching", subtitle: "Today", category: "teaching", links: [
+      { id: "teaching-today", archived: true, private: true, name: "Teaching", subtitle: "Today", category: "teaching", links: [
         { label: "private" }
       ]},
-      { id: "korean-study", name: "Korean", subtitle: "Ind. Study", category: "teaching", links: [
+      { id: "korean-study", archived: true, name: "Korean", subtitle: "Ind. Study", category: "teaching", links: [
         { label: "site", url: "https://omatty123.github.io/korean-independent-study/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/korean-independent-study", icon: "github" }
       ]},
-      { id: "korean-film", name: "Korean Film", subtitle: "HIST 418", category: "teaching", links: [
+      { id: "korean-film", archived: true, name: "Korean Film", subtitle: "HIST 418", category: "teaching", links: [
         { label: "site", url: "https://omatty123.github.io/Modern-Korea-through-Lit-and-Film/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/Modern-Korea-through-Lit-and-Film", icon: "github" }
       ]},
@@ -156,7 +160,7 @@
         { label: "site", url: "https://omatty123.github.io/MontafonMoonlight/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/MontafonMoonlight", icon: "github" }
       ]},
-      { id: "buddhist", name: "Buddhist", subtitle: "Travel", category: "translation", links: [
+      { id: "buddhist", archived: true, name: "Buddhist", subtitle: "Travel", category: "translation", links: [
         { label: "drive", url: "https://drive.google.com/drive/u/0/folders/1lZ6WZD0ChF0u6FlpHmRJk3xq299uQxgL", icon: "folder" }
       ]},
       { id: "no-time-left", name: "No Time Left", subtitle: "정찬주 · Subul", category: "translation", links: [
@@ -173,13 +177,13 @@
       { id: "bld-hub", name: "BLD", subtitle: "Hub", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/banglangdang-hub/", icon: "globe" }
       ]},
-      { id: "media", name: "Media", subtitle: "Dashboard", category: "family", links: [
+      { id: "media", archived: true, name: "Media", subtitle: "Dashboard", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/media-dashboard/", icon: "globe" }
       ]},
       { id: "gye", name: "GYE", subtitle: "Travel Fund", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/gye-travel-fund/", icon: "globe" }
       ]},
-      { id: "korea-2026", name: "Korea 2026", subtitle: "Tim + Benno", category: "family", links: [
+      { id: "korea-2026", archived: true, name: "Korea 2026", subtitle: "Tim + Benno", category: "family", links: [
         { label: "site", url: "https://tim-benno-korea-2026.tengri-1972.chatgpt.site", icon: "globe" }
       ]},
       { id: "paris-2026", name: "Paris", subtitle: "Trip 2026", category: "family", links: [
@@ -191,7 +195,7 @@
       { id: "dunes", name: "Dunes", subtitle: "Book Site", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/among-the-dunes/", icon: "globe" }
       ]},
-      { id: "chuff", name: "Chuff", subtitle: "Loop", category: "family", links: [
+      { id: "chuff", archived: true, name: "Chuff", subtitle: "Loop", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/chuff-loop-status/", icon: "globe" }
       ]},
       { id: "plastic-man", name: "Plastic Man", subtitle: "Modou Fall", category: "family", links: [
@@ -201,13 +205,13 @@
       { id: "eternal-incense", name: "Eternal", subtitle: "Incense", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/eternal-incense/", icon: "globe" }
       ]},
-      { id: "pirogue", name: "Pirogue", subtitle: "Dominica Chang", category: "family", links: [
+      { id: "pirogue", archived: true, name: "Pirogue", subtitle: "Dominica Chang", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/pirogue-site/", icon: "globe" }
       ]},
-      { id: "banglangdang-reunion-2026", private: true, name: "BLD Reunion", subtitle: "2026", category: "family", links: [
+      { id: "banglangdang-reunion-2026", archived: true, private: true, name: "BLD Reunion", subtitle: "2026", category: "family", links: [
         { label: "private" }
       ]},
-      { id: "downstairs", name: "Downstairs", subtitle: "Floor Project", category: "family", links: [
+      { id: "downstairs", archived: true, name: "Downstairs", subtitle: "Floor Project", category: "family", links: [
         { label: "site", url: "https://downstairs-floor-project.tengri-1972.chatgpt.site", icon: "globe" }
       ]},
       { id: "outside-shared-songlist", name: "Good Time Charlie's", subtitle: "Jukebox", category: "family", links: [
@@ -220,10 +224,10 @@
         { label: "app", url: "https://reading-app-one.vercel.app", icon: "link" },
         { label: "drive", url: "https://drive.google.com/drive/u/0/folders/1NFUcdxxApEFX--H2pb-DHcm4jxBMKIDO", icon: "folder" }
       ]},
-      { id: "neenah-korea", name: "Neenah", subtitle: "Korea Talk", category: "creative", links: [
+      { id: "neenah-korea", archived: true, name: "Neenah", subtitle: "Korea Talk", category: "creative", links: [
         { label: "site", url: "https://omatty123.github.io/neenah-korea/", icon: "globe" }
       ]},
-      { id: "sun-mass-sim", name: "Sun Mass", subtitle: "Sim", category: "creative", links: [
+      { id: "sun-mass-sim", archived: true, name: "Sun Mass", subtitle: "Sim", category: "creative", links: [
         { label: "site", url: "https://omatty123.github.io/sun-mass-sim/", icon: "globe" }
       ]},
       { id: "pere-goriot", name: "Père Goriot", subtitle: "Screenplay", category: "creative", links: [
@@ -243,14 +247,14 @@
         { label: "open", url: "https://teaching-fall-2026-roster.pages.dev/instructor/fall-2026/cabinet.html", icon: "folder" },
         { label: "map", url: "https://teaching-fall-2026-roster.pages.dev/instructor/fall-2026/system.html", icon: "link" }
       ]},
-      { id: "jake-frederick", name: "Jake Frederick", subtitle: "Portfolio", category: "misc", links: [
+      { id: "jake-frederick", archived: true, name: "Jake Frederick", subtitle: "Portfolio", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/professor-jake-frederick/", icon: "globe" }
       ]},
       { id: "nws-weather", name: "NWS Weather", subtitle: "App", category: "misc", links: [
         { label: "app", url: "https://omatty123.github.io/fox-valley-weather/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/fox-valley-weather", icon: "github" }
       ]},
-      { id: "summer-house", name: "Summer", subtitle: "House Work", category: "misc", links: [
+      { id: "summer-house", archived: true, name: "Summer", subtitle: "House Work", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/summer-house-work/", icon: "globe" }
       ]},
       { id: "lift-log", name: "Lift Log", subtitle: "Training", category: "misc", links: [
@@ -264,16 +268,16 @@
         { label: "site", url: "https://omatty123.github.io/morning-edition/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/morning-edition", icon: "github" }
       ]},
-      { id: "fox-valley-tornado-report", name: "Fox River", subtitle: "Tornado Atlas", category: "misc", links: [
+      { id: "fox-valley-tornado-report", archived: true, name: "Fox River", subtitle: "Tornado Atlas", category: "misc", links: [
         { label: "atlas", url: "https://fox-river-tornado-atlas.tengri-1972.chatgpt.site", icon: "globe" }
       ]},
-      { id: "teaching-portal", name: "Teaching", subtitle: "Portal", category: "teaching", links: [
+      { id: "teaching-portal", archived: true, name: "Teaching", subtitle: "Portal", category: "teaching", links: [
         { label: "site", url: "https://omatty123.github.io/teaching-portal/", icon: "globe" }
       ]},
-      { id: "platebookmaker", name: "HIST 213", subtitle: "Platebook", category: "teaching", links: [
+      { id: "platebookmaker", archived: true, name: "HIST 213", subtitle: "Platebook", category: "teaching", links: [
         { label: "site", url: "https://omatty123.github.io/platebookmaker/", icon: "globe" }
       ]},
-      { id: "platebook-maker", name: "Platebook", subtitle: "Maker", category: "teaching", links: [
+      { id: "platebook-maker", archived: true, name: "Platebook", subtitle: "Maker", category: "teaching", links: [
         { label: "tool", url: "https://omatty123.github.io/Platebook-Maker/", icon: "globe" }
       ]},
       { id: "wujia", name: "Five Houses", subtitle: "Philosophy Matrix", category: "teaching", links: [
@@ -285,44 +289,44 @@
       { id: "h2o", name: "H2O", subtitle: "Water in 45 Languages", category: "teaching", links: [
         { label: "site", url: "https://omatty123.github.io/h2o/", icon: "globe" }
       ]},
-      { id: "dashboard-template", name: "Dashboard", subtitle: "Template (archived)", category: "teaching", links: [
+      { id: "dashboard-template", archived: true, name: "Dashboard", subtitle: "Template (archived)", category: "teaching", links: [
         { label: "site", url: "https://omatty123.github.io/dashboard-template/", icon: "globe" }
       ]},
-      { id: "paris2025", name: "Paris", subtitle: "December 2025", category: "family", links: [
+      { id: "paris2025", archived: true, name: "Paris", subtitle: "December 2025", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/paris2025/", icon: "globe" }
       ]},
-      { id: "paris-return-2025", name: "Paris Return", subtitle: "Flights Dec 2025", category: "family", links: [
+      { id: "paris-return-2025", archived: true, name: "Paris Return", subtitle: "Flights Dec 2025", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/2025ParisReturn/", icon: "globe" }
       ]},
-      { id: "korea-trip-2025", name: "Korea 2025", subtitle: "Spring Trip", category: "family", links: [
+      { id: "korea-trip-2025", archived: true, name: "Korea 2025", subtitle: "Spring Trip", category: "family", links: [
         { label: "site", url: "https://omatty123.github.io/Korea_Trip_Site_Package/", icon: "globe" }
       ]},
-      { id: "dog-walk-weather", name: "Dog Walk", subtitle: "Weather", category: "family", links: [
+      { id: "dog-walk-weather", archived: true, name: "Dog Walk", subtitle: "Weather", category: "family", links: [
         { label: "app", url: "https://omatty123.github.io/dog-walk-weather/", icon: "globe" }
       ]},
-      { id: "summer-culture", name: "Summer", subtitle: "War and Peace + Films", category: "reading", links: [
+      { id: "summer-culture", archived: true, name: "Summer", subtitle: "War and Peace + Films", category: "reading", links: [
         { label: "site", url: "https://omatty123.github.io/summer-culture-site/", icon: "globe" }
       ]},
       { id: "levin-solms-desk", name: "Levin & Solms", subtitle: "Reading Desk", category: "reading", links: [
         { label: "site", url: "https://omatty123.github.io/levin-solms-desk/", icon: "globe" },
         { label: "repo", url: "https://github.com/omatty123/levin-solms-desk", icon: "github" }
       ]},
-      { id: "orbitsim", name: "Vanishing Sun", subtitle: "Orbit Sim", category: "creative", links: [
+      { id: "orbitsim", archived: true, name: "Vanishing Sun", subtitle: "Orbit Sim", category: "creative", links: [
         { label: "site", url: "https://omatty123.github.io/orbitsim/", icon: "globe" }
       ]},
       { id: "dew-film", name: "DEW", subtitle: "Huayan Film", category: "creative", links: [
         { label: "vids", url: "https://docs.google.com/videos/d/1sgmulCELaMAVlZyZNLkbxj5VMe4_OmwtBspI0m68W34/edit", icon: "link" }
       ]},
-      { id: "herndon-briefing", name: "Herndon", subtitle: "Briefing", category: "misc", links: [
+      { id: "herndon-briefing", archived: true, name: "Herndon", subtitle: "Briefing", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/herndon-briefing/", icon: "globe" }
       ]},
-      { id: "tonya-codex-guide", name: "Tonya", subtitle: "Codex Guide", category: "misc", links: [
+      { id: "tonya-codex-guide", archived: true, name: "Tonya", subtitle: "Codex Guide", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/tonya-codex-guide/", icon: "globe" }
       ]},
-      { id: "life-dashboard-v2", name: "Life", subtitle: "Dashboard v2", category: "misc", links: [
+      { id: "life-dashboard-v2", archived: true, name: "Life", subtitle: "Dashboard v2", category: "misc", links: [
         { label: "site", url: "https://omatty123.github.io/life-dashboard-v2/", icon: "globe" }
       ]},
-      { id: "meta", name: "META", subtitle: "System Workspace", category: "misc", links: [
+      { id: "meta", archived: true, name: "META", subtitle: "System Workspace", category: "misc", links: [
         { label: "local" }
       ]}
     ];
@@ -361,13 +365,29 @@
       : window.matchMedia('(min-width: 720px)').matches ? 2 : 1;
     let renderedColumns = columnCount();
 
+    const card = p => `
+              <article class="project" draggable="true" tabindex="0" aria-label="${p.name}${p.subtitle ? ` ${p.subtitle}` : ''}" data-id="${p.id}">
+                <div class="project-info">
+                  <div class="project-title">${p.name}${p.subtitle ? ` <span class="project-subtitle">${p.subtitle}</span>` : ''}</div>
+                </div>
+                <div class="project-links">
+                  ${p.links.map(l => l.url
+                    ? `<a href="${l.url}" target="_blank" rel="noopener" class="link" aria-label="${p.name}${p.subtitle ? ` ${p.subtitle}` : ''} — ${l.label} (opens in a new tab)">${l.label}</a>`
+                    : l.label === 'private'
+                      ? `<button type="button" class="link private-connect" aria-label="Connect ${p.name} private links">private</button>`
+                      : `<span class="link link--status" aria-label="${l.label} project">${l.label}</span>`
+                  ).join('')}
+                </div>
+              </article>
+`;
+
     function render() {
       const container = document.getElementById("categories");
       container.innerHTML = Array.from({ length: renderedColumns }, (_, i) =>
         `<div class="category-column" data-col="${i}"></div>`).join('');
       const columns = Array.from(container.querySelectorAll('.category-column'));
       const grouped = {};
-      projects.forEach(p => { if (!grouped[p.category]) grouped[p.category] = []; grouped[p.category].push(p); });
+      projects.filter(p => !p.archived).forEach(p => { if (!grouped[p.category]) grouped[p.category] = []; grouped[p.category].push(p); });
       const columnWeights = Array(renderedColumns).fill(0);
 
       categoryOrder.forEach(cat => {
@@ -383,28 +403,17 @@
             <span class="category-count">${grouped[cat].length}</span>
           </div>
           <div class="projects-grid">
-            ${grouped[cat].map(p => `
-              <article class="project" draggable="true" tabindex="0" aria-label="${p.name}${p.subtitle ? ` ${p.subtitle}` : ''}" data-id="${p.id}">
-                <div class="project-info">
-                  <div class="project-title">${p.name}${p.subtitle ? ` <span class="project-subtitle">${p.subtitle}</span>` : ''}</div>
-                </div>
-                <div class="project-links">
-                  ${p.links.map(l => l.url
-                    ? `<a href="${l.url}" target="_blank" rel="noopener" class="link" aria-label="${p.name}${p.subtitle ? ` ${p.subtitle}` : ''} — ${l.label} (opens in a new tab)">${l.label}</a>`
-                    : l.label === 'private'
-                      ? `<button type="button" class="link private-connect" aria-label="Connect ${p.name} private links">private</button>`
-                      : `<span class="link link--status" aria-label="${l.label} project">${l.label}</span>`
-                  ).join('')}
-                </div>
-              </article>
-            `).join('')}
+            ${grouped[cat].map(card).join('')}
           </div>`;
         const targetColumn = columnWeights.indexOf(Math.min(...columnWeights));
         columns[targetColumn].appendChild(section);
         columnWeights[targetColumn] += grouped[cat].length + 1;
       });
+      const chest = projects.filter(p => p.archived);
+      document.getElementById('treasureGrid').innerHTML = chest.map(card).join('');
     }
 
+    const chestCount = projects.filter(p => p.archived).length;
     render();
     bindPrivateSettings(projects, () => { render(); filterProjects(); });
 
@@ -417,6 +426,11 @@
         el.hidden = !text.toLocaleLowerCase().includes(query);
         if (!el.hidden) count++;
       });
+      const treasure = document.getElementById('treasure');
+      const chestHits = treasure.querySelectorAll('.project:not([hidden])').length;
+      document.getElementById('treasureCount').textContent = chestHits;
+      treasure.hidden = chestHits === 0;
+      if (query) treasure.open = true;
       document.querySelectorAll('.category').forEach(section => {
         const visible = section.querySelectorAll('.project:not([hidden])').length;
         section.hidden = visible === 0;
@@ -426,7 +440,7 @@
         column.hidden = !column.querySelector('.category:not([hidden])');
       });
       document.getElementById('projectCount').textContent = query
-        ? `${count} of ${projects.length} projects` : `${projects.length} projects · ${categoryOrder.length} categories`;
+        ? `${count} of ${projects.length} projects` : `${projects.length - chestCount} projects · ${categoryOrder.length} categories · ${chestCount} in the chest`;
       document.getElementById('emptyState').hidden = count !== 0;
     }
     search.addEventListener('input', filterProjects);
